@@ -95,22 +95,22 @@ Format your response clearly with these sections. Be specific about AWS services
 def load_architecture_dataset(file_path: str) -> Dataset:
     """Load architecture dataset with full metadata preserved."""
     import json
-    
+
     samples = []
     file_path_obj = Path(__file__).parent / file_path
-    
-    with open(file_path_obj, 'r') as f:
+
+    with open(file_path_obj, "r") as f:
         for line in f:
             data = json.loads(line.strip())
-            
+
             # Create sample with input/target fields and preserve metadata
             sample = Sample(
                 input=data.get("input", ""),
                 target=data.get("target", ""),
-                metadata=data  # Store the full original data
+                metadata=data,  # Store the full original data
             )
             samples.append(sample)
-    
+
     return MemoryDataset(samples)
 
 
@@ -118,37 +118,55 @@ def load_architecture_dataset(file_path: str) -> Dataset:
 @metric
 def accuracy():
     """Extract accuracy score from metadata."""
+
     def metric_fn(scores):
         if not scores:
             return 0.0
-        accuracy_values = [score.metadata.get("accuracy", 0.0) for score in scores if score.metadata]
+        accuracy_values = [
+            score.metadata.get("accuracy", 0.0) for score in scores if score.metadata
+        ]
         return sum(accuracy_values) / len(accuracy_values) if accuracy_values else 0.0
+
     return metric_fn
 
 
-@metric  
+@metric
 def completeness():
     """Extract completeness score from metadata."""
+
     def metric_fn(scores):
         if not scores:
             return 0.0
-        completeness_values = [score.metadata.get("completeness", 0.0) for score in scores if score.metadata]
-        return sum(completeness_values) / len(completeness_values) if completeness_values else 0.0
+        completeness_values = [
+            score.metadata.get("completeness", 0.0)
+            for score in scores
+            if score.metadata
+        ]
+        return (
+            sum(completeness_values) / len(completeness_values)
+            if completeness_values
+            else 0.0
+        )
+
     return metric_fn
 
 
 @metric
 def quality():
     """Extract quality score from metadata."""
+
     def metric_fn(scores):
         if not scores:
             return 0.0
-        quality_values = [score.metadata.get("quality", 0.0) for score in scores if score.metadata]
+        quality_values = [
+            score.metadata.get("quality", 0.0) for score in scores if score.metadata
+        ]
         return sum(quality_values) / len(quality_values) if quality_values else 0.0
+
     return metric_fn
 
 
-@scorer(metrics=[mean(), accuracy(), completeness(), quality()])
+@scorer(metrics=[mean()])
 def architecture_scorer() -> Scorer:
     """Custom scorer for architecture evaluation tasks."""
 
@@ -546,16 +564,20 @@ def architecture_solver() -> Solver:
         """Solve architecture evaluation tasks."""
 
         # Get the evaluation data from metadata (preserved from our custom dataset)
-        eval_data = state.metadata if hasattr(state, "metadata") and state.metadata else {}
-        
+        eval_data = (
+            state.metadata if hasattr(state, "metadata") and state.metadata else {}
+        )
+
         eval_type = eval_data.get("type", "")
         diagram_path = eval_data.get("diagram_path", "")
         question = state.input  # The input field extracted by our custom dataset
-        
+
         # Prepare the prompt based on evaluation type
         if eval_type == "diagram_interpretation":
-            system_prompt = ARCHITECTURE_SYSTEM_PROMPT + "\n\n" + DIAGRAM_INTERPRETATION_PROMPT
-            
+            system_prompt = (
+                ARCHITECTURE_SYSTEM_PROMPT + "\n\n" + DIAGRAM_INTERPRETATION_PROMPT
+            )
+
             if diagram_path:
                 user_message = f"""Please analyze the architecture diagram located at: {diagram_path}
 
@@ -564,21 +586,25 @@ Question: {question}
 Please provide a comprehensive analysis addressing the specific question asked."""
             else:
                 user_message = f"Question: {question}"
-                
+
         elif eval_type == "diagram_creation":
-            system_prompt = ARCHITECTURE_SYSTEM_PROMPT + "\n\n" + DIAGRAM_CREATION_PROMPT
-            
+            system_prompt = (
+                ARCHITECTURE_SYSTEM_PROMPT + "\n\n" + DIAGRAM_CREATION_PROMPT
+            )
+
             requirements = eval_data.get("requirements", "")
             pattern = eval_data.get("pattern", "")
             problem = eval_data.get("problem", "")
             constraints = eval_data.get("constraints", [])
-            
+
             if requirements:
                 user_message = f"""Requirements: {requirements}
 
 Please design an AWS architecture that meets these requirements."""
             elif pattern:
-                constraint_text = "\n".join([f"- {c}" for c in constraints]) if constraints else ""
+                constraint_text = (
+                    "\n".join([f"- {c}" for c in constraints]) if constraints else ""
+                )
                 user_message = f"""Pattern to implement: {pattern}
 
 Constraints:
@@ -586,7 +612,9 @@ Constraints:
 
 Please design an AWS architecture implementing this pattern with the given constraints."""
             elif problem:
-                constraint_text = "\n".join([f"- {c}" for c in constraints]) if constraints else ""
+                constraint_text = (
+                    "\n".join([f"- {c}" for c in constraints]) if constraints else ""
+                )
                 user_message = f"""Problem: {problem}
 
 Constraints:
@@ -598,19 +626,19 @@ Please design a solution architecture addressing this problem within the given c
         else:
             system_prompt = ARCHITECTURE_SYSTEM_PROMPT
             user_message = question
-        
+
         # Update the state with the prepared messages
         state.messages = [
             ChatMessageSystem(content=system_prompt),
-            ChatMessageUser(content=user_message)
+            ChatMessageUser(content=user_message),
         ]
-        
+
         # Store evaluation data in metadata for scoring
         state.metadata = eval_data
-        
+
         # Generate response
         state = await generate(state)
-        
+
         return state
 
     return solve
@@ -619,28 +647,22 @@ Please design a solution architecture addressing this problem within the given c
 @task
 def architecture_interpretation() -> Task:
     """Task for architecture diagram interpretation evaluations."""
-    
+
     return Task(
         dataset=load_architecture_dataset("architecture_interpretation.jsonl"),
-        plan=[
-            architecture_solver(),
-            generate()
-        ],
-        scorer=architecture_scorer()
+        plan=[architecture_solver(), generate()],
+        scorer=architecture_scorer(),
     )
 
 
-@task  
+@task
 def architecture_design() -> Task:
     """Combined task for all architecture design evaluations."""
-    
+
     return Task(
         dataset=load_architecture_dataset("architecture_interpretation.jsonl"),
-        plan=[
-            architecture_solver(),
-            generate()
-        ],
-        scorer=architecture_scorer()
+        plan=[architecture_solver(), generate()],
+        scorer=architecture_scorer(),
     )
 
 
