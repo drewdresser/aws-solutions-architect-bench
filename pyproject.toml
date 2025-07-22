@@ -1,0 +1,11 @@
+[project]
+name = "aws-solutions-architect-bench"
+version = "0.1.0"
+description = "A comprehensive evaluation framework for testing AI model performance on real-world AWS Solutions Architect tasks"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=0.56.0",
+    "inspect-ai>=0.3.111",
+    "openai>=1.93.0",
+]

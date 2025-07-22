@@ -1,0 +1,9 @@
+services:
+  default:
+    build: .
+    init: true
+    command: tail -f /dev/null
+    mem_limit: 2g
+    network_mode: none
+    volumes:
+      - /tmp:/tmp

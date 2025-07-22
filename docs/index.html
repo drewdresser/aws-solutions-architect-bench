@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AWS-SA Eval Leaderboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+  <style> tbody tr:hover {background:#f5f5f5;} </style>
+</head>
+<body class="section">
+  <h1 class="title is-3">AWS Solutions Architect LLM Benchmark</h1>
+  <table id="board" class="table is-striped is-narrow is-hoverable"></table>
+
+<script>
+(async () => {
+  const resp = await fetch('leaderboard.json');          // same folder
+  const rows = await resp.json();
+  // Build header
+  const tasks = Object.keys(rows[0]).filter(k => k!=='model');
+  const th = ['Model', ...tasks, 'Overall']
+      .map(t=>`<th>${t}</th>`).join('');
+  // Build body
+  const body = rows.map(r => {
+    const cells = [r.model, ...tasks.map(t=>r[t]), r.overall]
+      .map(c=>`<td>${(c*100).toFixed(1)}%</td>`)
+      .join('');
+    return `<tr>${cells}</tr>`;
+  }).join('');
+  document.getElementById('board').innerHTML =
+      `<thead><tr>${th}</tr></thead><tbody>${body}</tbody>`;
+})();
+</script>
+</body>
+</html>
