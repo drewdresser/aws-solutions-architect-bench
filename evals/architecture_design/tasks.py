@@ -5,24 +5,17 @@ This module defines evaluation tasks for testing AI model capabilities on AWS ar
 design, including diagram interpretation and creation tasks.
 """
 
+import base64
 import json
-import re
+import mimetypes
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Dict
 
 from inspect_ai import Task, task
-from inspect_ai.dataset import Dataset, FieldSpec, Sample, json_dataset, MemoryDataset
-from inspect_ai.model import ChatMessage, ChatMessageSystem, ChatMessageUser
-from inspect_ai.scorer import Score, Scorer, Target, accuracy, scorer, mean, metric
-from inspect_ai.solver import (
-    Generate,
-    Plan,
-    Solver,
-    TaskState,
-    generate,
-    solver,
-    system_message,
-)
+from inspect_ai.dataset import Dataset, MemoryDataset, Sample
+from inspect_ai.model import ChatMessageSystem, ChatMessageUser, ContentImage, ContentText
+from inspect_ai.scorer import Score, Scorer, Target, mean, metric, scorer
+from inspect_ai.solver import Generate, Solver, TaskState, generate, solver
 
 
 # System prompts for different evaluation types
@@ -116,57 +109,96 @@ def load_architecture_dataset(file_path: str) -> Dataset:
 
 # Custom metrics for architecture evaluation
 @metric
-def accuracy():
-    """Extract accuracy score from metadata."""
+def architecture_accuracy_metric():
+    """Average accuracy component extracted from score metadata."""
 
     def metric_fn(scores):
         if not scores:
             return 0.0
-        accuracy_values = [
-            score.metadata.get("accuracy", 0.0) for score in scores if score.metadata
+        values = [
+            score.metadata.get("accuracy", 0.0)
+            for score in scores
+            if getattr(score, "metadata", None)
         ]
-        return sum(accuracy_values) / len(accuracy_values) if accuracy_values else 0.0
+        return sum(values) / len(values) if values else 0.0
 
     return metric_fn
 
 
 @metric
-def completeness():
-    """Extract completeness score from metadata."""
+def architecture_completeness_metric():
+    """Average completeness component extracted from score metadata."""
 
     def metric_fn(scores):
         if not scores:
             return 0.0
-        completeness_values = [
+        values = [
             score.metadata.get("completeness", 0.0)
             for score in scores
-            if score.metadata
+            if getattr(score, "metadata", None)
         ]
-        return (
-            sum(completeness_values) / len(completeness_values)
-            if completeness_values
-            else 0.0
-        )
+        return sum(values) / len(values) if values else 0.0
 
     return metric_fn
 
 
 @metric
-def quality():
-    """Extract quality score from metadata."""
+def architecture_quality_metric():
+    """Average quality component extracted from score metadata."""
 
     def metric_fn(scores):
         if not scores:
             return 0.0
-        quality_values = [
-            score.metadata.get("quality", 0.0) for score in scores if score.metadata
+        values = [
+            score.metadata.get("quality", 0.0)
+            for score in scores
+            if getattr(score, "metadata", None)
         ]
-        return sum(quality_values) / len(quality_values) if quality_values else 0.0
+        return sum(values) / len(values) if values else 0.0
 
     return metric_fn
 
 
-@scorer(metrics=[mean()])
+def _get_sample_metadata(state: TaskState) -> Dict:
+    """Return metadata attached to the current sample for prompting and scoring."""
+
+    sample = getattr(state, "sample", None)
+    if sample and getattr(sample, "metadata", None):
+        return sample.metadata
+
+    if getattr(state, "metadata", None):
+        return state.metadata
+
+    return {}
+
+
+def _image_content_for_path(diagram_path: str) -> ContentImage | None:
+    """Return base64-encoded image content for the provided diagram path."""
+
+    if not diagram_path:
+        return None
+
+    image_file = (Path(__file__).parent / diagram_path).resolve()
+    if not image_file.exists() or not image_file.is_file():
+        return None
+
+    mime_type, _ = mimetypes.guess_type(image_file.name)
+    if mime_type is None:
+        mime_type = "image/png"
+
+    encoded = base64.b64encode(image_file.read_bytes()).decode("ascii")
+    data_uri = f"data:{mime_type};base64,{encoded}"
+    return ContentImage(image=data_uri)
+
+
+@scorer(
+    metrics=[
+        mean(),
+        architecture_accuracy_metric(),
+        architecture_completeness_metric(),
+        architecture_quality_metric(),
+    ]
+)
 def architecture_scorer() -> Scorer:
     """Custom scorer for architecture evaluation tasks."""
 
@@ -174,10 +206,7 @@ def architecture_scorer() -> Scorer:
         """Score architecture evaluation responses."""
 
         # Get the sample data for scoring - should now be in state.metadata from our custom dataset
-        if hasattr(state, "metadata") and state.metadata:
-            eval_data = state.metadata
-        else:
-            eval_data = {}
+        eval_data = _get_sample_metadata(state)
 
         response = state.output.completion if state.output else ""
 
@@ -560,32 +589,43 @@ def score_problem_solving(
 def architecture_solver() -> Solver:
     """Solver for architecture evaluation tasks."""
 
-    async def solve(state: TaskState, generate: Generate) -> TaskState:
+    async def solve(state: TaskState, _generate: Generate) -> TaskState:
         """Solve architecture evaluation tasks."""
 
         # Get the evaluation data from metadata (preserved from our custom dataset)
-        eval_data = (
-            state.metadata if hasattr(state, "metadata") and state.metadata else {}
-        )
+        eval_data = _get_sample_metadata(state)
 
         eval_type = eval_data.get("type", "")
         diagram_path = eval_data.get("diagram_path", "")
         question = state.input  # The input field extracted by our custom dataset
 
         # Prepare the prompt based on evaluation type
+        content_parts: list[ContentText | ContentImage]
+
         if eval_type == "diagram_interpretation":
             system_prompt = (
                 ARCHITECTURE_SYSTEM_PROMPT + "\n\n" + DIAGRAM_INTERPRETATION_PROMPT
             )
 
-            if diagram_path:
-                user_message = f"""Please analyze the architecture diagram located at: {diagram_path}
-
-Question: {question}
-
-Please provide a comprehensive analysis addressing the specific question asked."""
+            image_content = _image_content_for_path(diagram_path)
+            if image_content is not None:
+                content_parts = [
+                    ContentText(
+                        text="Please analyze the following AWS architecture diagram and answer the question."
+                    ),
+                    image_content,
+                    ContentText(text=f"Question: {question}"),
+                ]
             else:
-                user_message = f"Question: {question}"
+                content_parts = [
+                    ContentText(
+                        text=(
+                            "Diagram unavailable; analyze using the provided description "
+                            f"(original path: {diagram_path or 'n/a'})."
+                        )
+                    ),
+                    ContentText(text=f"Question: {question}"),
+                ]
 
         elif eval_type == "diagram_creation":
             system_prompt = (
@@ -598,46 +638,44 @@ Please provide a comprehensive analysis addressing the specific question asked."
             constraints = eval_data.get("constraints", [])
 
             if requirements:
-                user_message = f"""Requirements: {requirements}
-
-Please design an AWS architecture that meets these requirements."""
+                prompt_text = (
+                    "Requirements:\n"
+                    f"{requirements}\n\nPlease design an AWS architecture that meets these requirements."
+                )
             elif pattern:
                 constraint_text = (
                     "\n".join([f"- {c}" for c in constraints]) if constraints else ""
                 )
-                user_message = f"""Pattern to implement: {pattern}
-
-Constraints:
-{constraint_text}
-
-Please design an AWS architecture implementing this pattern with the given constraints."""
+                prompt_text = (
+                    "Pattern to implement: "
+                    f"{pattern}\n\nConstraints:\n{constraint_text}\n\n"
+                    "Please design an AWS architecture implementing this pattern with the given constraints."
+                )
             elif problem:
                 constraint_text = (
                     "\n".join([f"- {c}" for c in constraints]) if constraints else ""
                 )
-                user_message = f"""Problem: {problem}
-
-Constraints:
-{constraint_text}
-
-Please design a solution architecture addressing this problem within the given constraints."""
+                prompt_text = (
+                    "Problem: "
+                    f"{problem}\n\nConstraints:\n{constraint_text}\n\n"
+                    "Please design a solution architecture addressing this problem within the given constraints."
+                )
             else:
-                user_message = question
+                prompt_text = question
+
+            content_parts = [ContentText(text=prompt_text)]
         else:
             system_prompt = ARCHITECTURE_SYSTEM_PROMPT
-            user_message = question
+            content_parts = [ContentText(text=question)]
 
         # Update the state with the prepared messages
         state.messages = [
             ChatMessageSystem(content=system_prompt),
-            ChatMessageUser(content=user_message),
+            ChatMessageUser(content=content_parts if len(content_parts) > 1 else content_parts[0].text),
         ]
 
         # Store evaluation data in metadata for scoring
         state.metadata = eval_data
-
-        # Generate response
-        state = await generate(state)
 
         return state
 

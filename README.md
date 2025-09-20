@@ -26,6 +26,13 @@ Tests ability to generate valid AWS CDK Python code that compiles and passes val
 - **Validation**: Docker-based environment with `cdk synth` and `cfn-lint`
 - **Real-world focus**: Common infrastructure patterns and use cases
 
+### 3. AWS Architecture Design (`evals/architecture_design/`)
+Evaluates architectural reasoning across diagram interpretation and solution design.
+- **Interpretation prompts**: Ask the model to analyze an AWS diagram, identify services, trace flows, or assess risks—with the PNG diagram embedded inline for vision-capable models
+- **Creation prompts**: Require the model to draft new architectures from textual requirements or migration scenarios
+- **Artifacts**: JSONL samples reference PNG diagrams stored in `diagrams/`; the solver embeds them as base64 images (and also preserves the file path for text-only fallbacks)
+- **Scoring**: Custom heuristic scorer averaging accuracy, completeness, and quality based on rubric metadata
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -59,6 +66,13 @@ Tests ability to generate valid AWS CDK Python code that compiles and passes val
      --model openrouter/anthropic/claude-sonnet-4,openrouter/openai/gpt-4.1 \
      --logs-dir logs/benchmark-$(date +%Y%m%d)
    ```
+
+5. **Run architecture design evaluation (vision-capable model recommended):**
+   ```bash
+   inspect eval evals/architecture_design/tasks.py:architecture_design \
+     --model openrouter/anthropic/claude-sonnet-4 --max-samples 5
+   ```
+   Models without vision support still receive the textual question and the original diagram path, but results will be stronger with multimodal models.
 
 ## 🏗️ Architecture
 
