@@ -68,8 +68,14 @@ def detect_task_key(path: str) -> Optional[str]:
     return None
 
 
-def metric_value(sample: Any, task_cfg: Dict[str, Any]) -> int:
-    """Extract metric value from sample based on task configuration."""
+def metric_value(sample: Any, task_cfg: Dict[str, Any]) -> float:
+    """Extract metric value from sample based on task configuration.
+
+    Supports:
+    - Multiple choice (choice): returns 1.0 if correct else 0.0
+    - CDK verify (cdk_verify): returns 1.0 if value in pass_values else 0.0
+    - Numeric rubric scores (e.g., architecture_scorer): returns the float value in [0,1]
+    """
     raw = getattr(sample, "scores", None) or getattr(sample, "score", None)
     scores = scores_to_dict(raw)
     metric_name = task_cfg["metric"]
@@ -90,21 +96,25 @@ def metric_value(sample: Any, task_cfg: Dict[str, Any]) -> int:
     # CDK verifier: check if value is in pass_values (prioritize this over multiple choice)
     if "pass_values" in task_cfg:
         pass_values = task_cfg["pass_values"]
-        return int(v in pass_values)
+        return float(v in pass_values)
+
+    # Numeric rubric values: if v is numeric, return as-is (assumed in [0,1])
+    if isinstance(v, (int, float)):
+        return float(v)
 
     # Multiple-choice format (only if not CDK verifier)
     if isinstance(m, dict) and "answer" in m:
-        return int(m.get("value") == m.get("answer"))
+        return float(m.get("value") == m.get("answer"))
 
     # Check if it's a Score object with answer attribute
     if hasattr(m, "answer") and hasattr(m, "value"):
         answer = getattr(m, "answer", None)
         value = getattr(m, "value", None)
         if answer is not None:
-            return int(value == answer)
+            return float(value == answer)
 
     # Default: convert to boolean
-    return int(bool(v))
+    return float(bool(v))
 
 
 def summarise_log(path: str) -> Optional[Dict[str, Any]]:
