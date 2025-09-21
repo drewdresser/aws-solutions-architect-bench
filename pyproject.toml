@@ -8,4 +8,5 @@ dependencies = [
     "anthropic>=0.56.0",
     "inspect-ai>=0.3.111",
     "openai>=1.93.0",
+    "pandas>=2.3.2",
 ]
