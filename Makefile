@@ -11,7 +11,7 @@ export
 endif
 
 # ---- Tunables (override via CLI) ----
-INSPECT ?= inspect
+INSPECT ?= uv run inspect
 PY      ?= uv run python
 
 # Comma-separated model list for eval-set/evals
