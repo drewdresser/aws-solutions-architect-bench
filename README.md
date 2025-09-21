@@ -1,5 +1,8 @@
 # AWS Solutions Architect Bench
 
+[![Nightly Benchmark](https://github.com/drewdresser/aws-solutions-architect-bench/actions/workflows/bench.yml/badge.svg)](../../actions/workflows/bench.yml)
+
+
 A comprehensive evaluation framework for testing AI model performance on real-world AWS Solutions Architect tasks. This benchmark goes beyond simple multiple-choice questions to evaluate practical skills that AWS Solutions Architects use daily.
 
 ## 🎯 Vision

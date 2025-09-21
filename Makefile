@@ -23,6 +23,9 @@ PRACTICE_TASK ?= evals/practice_exam/tasks.py
 # CDK task variant (pick one): tasks.py | tasks_no_critique.py | tasks_robust.py
 CDK_TASK ?= evals/cdk_synth/tasks_no_critique.py
 
+# Architecture task
+ARCH_TASK ?= evals/architecture_design/tasks.py
+
 # Limit items per task (0 = no limit)
 LIMIT   ?= 0
 
@@ -79,8 +82,8 @@ eval.arch: | $(LOGDIR)
 		--log-dir $(LOGDIR)
 
 bench: | $(LOGDIR)
-	@echo "▶ Running eval-set across: $(PRACTICE_TASK) + $(CDK_TASK)"
-	$(INSPECT) eval-set $(PRACTICE_TASK) $(CDK_TASK) \
+	@echo "▶ Running eval-set across: $(PRACTICE_TASK) + $(CDK_TASK) + $(ARCH_TASK)"
+	$(INSPECT) eval-set $(PRACTICE_TASK) $(CDK_TASK) $(ARCH_TASK) \
 		$(if $(filter-out 0,$(LIMIT)),--limit $(LIMIT),) \
 		--model $(MODELS) \
 		--log-dir $(LOGDIR)
