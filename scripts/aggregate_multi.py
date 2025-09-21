@@ -79,11 +79,21 @@ def metric_value(sample: Any, task_cfg: Dict[str, Any]) -> float:
     raw = getattr(sample, "scores", None) or getattr(sample, "score", None)
     scores = scores_to_dict(raw)
     metric_name = task_cfg["metric"]
+    metric_aliases = [metric_name, *task_cfg.get("metric_aliases", [])]
 
-    if metric_name not in scores:
-        raise KeyError(f"{metric_name} not in {list(scores.keys())}")
+    m = None
+    for name in metric_aliases:
+        if name in scores:
+            metric_name = name
+            m = scores[name]
+            break
 
-    m = scores[metric_name]
+    if m is None:
+        if len(scores) == 1:
+            metric_name, m = next(iter(scores.items()))
+        else:
+            available = list(scores.keys())
+            raise KeyError(f"{metric_name} not in {available}")
 
     # Handle different score formats
     if isinstance(m, dict):
@@ -93,14 +103,16 @@ def metric_value(sample: Any, task_cfg: Dict[str, Any]) -> float:
         # For object-based scores, get the value attribute
         v = getattr(m, "value", m)
 
-    # CDK verifier: check if value is in pass_values (prioritize this over multiple choice)
+    # Numeric rubric values: if v is numeric (or bool), return as-is (assumed in [0,1])
+    if isinstance(v, (int, float, bool)):
+        return float(v)
+
+    # CDK verifier / multiple choice with explicit pass values
     if "pass_values" in task_cfg:
         pass_values = task_cfg["pass_values"]
+        if isinstance(v, (list, tuple, set)):
+            return float(any(item in pass_values for item in v))
         return float(v in pass_values)
-
-    # Numeric rubric values: if v is numeric, return as-is (assumed in [0,1])
-    if isinstance(v, (int, float)):
-        return float(v)
 
     # Multiple-choice format (only if not CDK verifier)
     if isinstance(m, dict) and "answer" in m:
