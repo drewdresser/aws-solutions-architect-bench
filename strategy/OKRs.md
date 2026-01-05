@@ -9,10 +9,10 @@
 - KR3: Add CI automation for repeatable runs (nightly or scheduled) that generates `leaderboard.json` and updates the hosted leaderboard artifact.
 - KR4: Fix benchmark aggregation correctness (weights sum to 1.0; per-category scores consistent; overall score definition documented and enforced by tests).
 
-**Epics (planned):**
-- public-leaderboard-and-release
-- reproducibility-and-ci
-- scoring-and-aggregation-hardening
+**Related Epics:**
+- [scoring-and-aggregation-hardening.md](epics/scoring-and-aggregation-hardening.md)
+- [reproducibility-and-ci.md](epics/reproducibility-and-ci.md)
+- [public-leaderboard-and-release.md](epics/public-leaderboard-and-release.md)
 
 
 ## Objective 2 — Make scoring robust and aligned with SA Bench’s long-term vision
@@ -24,10 +24,10 @@
 - KR3: Standardize output formats where possible (Mermaid/PlantUML/JSON) for diagram generation and add automatic structural validation (parseable + required nodes/edges present).
 - KR4: For CDK synth, diagnose low pass rates and improve reliability of the evaluation (e.g., reduce false negatives, improve extraction/parsing, add clearer constraints); publish a short “known failure modes” doc.
 
-**Epics (planned):**
-- llm-judge-architecture-scoring
-- structured-diagram-formats-and-validation
-- cdk-eval-reliability
+**Related Epics:**
+- [llm-judge-architecture-scoring.md](epics/llm-judge-architecture-scoring.md)
+- [structured-diagram-formats-and-validation.md](epics/structured-diagram-formats-and-validation.md)
+- [cdk-eval-reliability.md](epics/cdk-eval-reliability.md)
 
 
 ## Objective 3 — Expand task coverage and stabilize category scores
@@ -42,11 +42,11 @@
 - KR3: Grow CDK track from ~20 to at least [N] prompts, with tagging by domain (networking/serverless/security/data/etc.) and a documented “prompt contract” to reduce ambiguity.
 - KR4: Publish category-level score reporting as first-class output (per-category score, confidence notes/variance estimates if feasible, and a clear definition of what each category measures).
 
-**Epics (planned):**
-- expand-mcq-dataset
-- expand-architecture-dataset
-- expand-cdk-dataset
-- category-score-reporting
+**Related Epics:**
+- [expand-mcq-dataset.md](epics/expand-mcq-dataset.md)
+- [expand-architecture-dataset.md](epics/expand-architecture-dataset.md)
+- [expand-cdk-dataset.md](epics/expand-cdk-dataset.md)
+- [category-score-reporting.md](epics/category-score-reporting.md)
 
 
 ## Objective 4 — Earn credible public attention for the leaderboard
@@ -57,7 +57,7 @@
 - KR2: Achieve at least [N] credible mentions/citations of the leaderboard (e.g., respected practitioners/researchers, major community accounts, or labs referencing results).
 - KR3: Get at least [N] external contributors or PRs (new tasks, scorer improvements, documentation fixes), showing the project is usable and not just a personal repo.
 
-**Epics (planned):**
-- launch-post-and-positioning
-- credibility-and-distribution
-- contribution-workflow
+**Related Epics:**
+- [launch-post-and-positioning.md](epics/launch-post-and-positioning.md)
+- [credibility-and-distribution.md](epics/credibility-and-distribution.md)
+- [contribution-workflow.md](epics/contribution-workflow.md)
