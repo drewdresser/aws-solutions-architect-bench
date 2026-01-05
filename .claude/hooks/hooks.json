@@ -1,0 +1,45 @@
+{
+  "$schema": "https://claude.ai/hooks-schema.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/check-file-protection.sh \"$TOOL_INPUT\""
+      },
+      {
+        "matcher": "Bash",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/log-command.sh \"$TOOL_INPUT\""
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/format-on-save.sh \"$TOOL_INPUT\""
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/notify.sh \"$EVENT\""
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/on-complete.sh"
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-environment.sh"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-prompt.sh \"$PROMPT\""
+      }
+    ]
+  }
+}

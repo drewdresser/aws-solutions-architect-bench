@@ -1,76 +1,94 @@
-# CLAUDE.md
+# Project Instructions for Claude Code
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Read AGENTS.md first for the full working agreement.
 
-## Overview
+## Strategy-First Workflow
 
-This is an AI model evaluation repository using the Inspect AI framework. It contains evaluations for testing AI model performance on AWS-related tasks, including AWS Solutions Architect practice exams and AWS CDK code generation.
+If a `/strategy/` folder exists, read these files in order before starting work:
 
-## Development Commands
+1. `/strategy/VISION.md` — Strategic context
+2. `/strategy/OKRs.md` — Current priorities
+3. `/strategy/epics/<relevant-epic>.md` — Epic details
+4. `/strategy/tasks/<assigned-task>.md` — Specific task
+5. `/strategy/adrs/` — Relevant architectural decisions
 
-### Dependencies
-```bash
-uv sync  # Install all dependencies
+This gives you full context from strategy down to implementation. Create ADRs when making significant architectural decisions.
+
+## Project Map
+
+<!-- Fill in your project structure -->
+
+```
+project/
+├── strategy/         # Strategic documentation (if using workflow)
+│   ├── VISION.md
+│   ├── OKRs.md
+│   ├── epics/
+│   ├── tasks/
+│   └── adrs/
+├── src/              # Python backend source
+│   └── ...
+├── tests/            # Python tests
+├── frontend/         # React frontend
+│   ├── src/
+│   └── ...
+├── pyproject.toml    # Python dependencies (uv)
+└── package.json      # Frontend dependencies (pnpm)
 ```
 
-### Running Evaluations
+## Common Commands
+
+### Python Backend
+
 ```bash
-# Run a single evaluation
-inspect eval <path_to_eval>.py --model <model_name>
+# Test
+uv run pytest
 
-# Example: Run CDK synth evaluation
-inspect eval evals/cdk_synth/tasks.py --model openai/gpt-4.1 --log-dir results/
+# Test with coverage
+uv run pytest --cov
 
-# Run multiple models against an evaluation set
-inspect eval-set <path_to_eval>.py --model openai/gpt-4.1,anthropic/claude-sonnet-4 --logs-dir logs/<unique_folder_name>
+# Lint
+uv run ruff check .
+
+# Format
+uv run ruff format .
+
+# Type check
+uv run ty
 ```
 
-## Architecture
+### React Frontend
 
-### Core Framework
-- Built on **Inspect AI** framework for model evaluation
-- Uses **uv** for Python dependency management
-- Requires Python 3.12+
+```bash
+# Dev
+pnpm dev
 
-### Evaluation Structure
-- `evals/` - Main evaluation modules, each containing:
-  - `tasks.py` - Task definition using Inspect AI decorators
-  - `*.jsonl` - Dataset files with evaluation samples
-  - Supporting files (Dockerfile, compose.yaml for containerized evaluations)
+# Test
+pnpm test
 
-- `demo/` - Simple example evaluations for learning the framework
-- `scripts/` - Utility scripts for aggregation and task management
-- `results/` and `logs/` - Evaluation outputs and logs
+# Lint
+pnpm lint
 
-### Task Types
+# Type check
+pnpm typecheck
 
-**AWS CDK Synth (`evals/cdk_synth/`)**
-- Tests model ability to generate valid AWS CDK Python code
-- Uses Docker sandbox with CDK CLI for verification
-- Scorer runs `cdk synth` and optional `cfn-lint` validation
-- Custom regex extraction for Python code blocks
-- Timeout: 60 seconds for synthesis
+# Build
+pnpm build
+```
 
-**AWS Practice Exam (`evals/practice_exam/`)**
-- Multiple choice questions for AWS Solutions Architect certification
-- Supports both single and multi-answer questions
-- Uses choice scorer with shuffle for answer order randomization
+## Conventions
 
-### Key Components
+- Keep diffs small and reviewable.
+- Prefer explicit types for public interfaces.
+- Add tests for new functionality.
+- Clean up code smells in files you're modifying.
+- When completing tasks, update status in `/strategy/tasks/`.
+- Create ADRs in `/strategy/adrs/` for significant architectural decisions.
 
-**Solvers**: Chain of thought, generate, self-critique, multiple_choice
-**Scorers**: Custom `cdk_verify()`, `choice()`, `exact()`
-**Datasets**: JSONL format with FieldSpec for input/target/choices mapping
-**Sandbox**: Docker-based execution environment for CDK evaluations
+## AWS Deployment Notes
 
-### Task Registry
-`scripts/task_registry.py` defines evaluation metadata:
-- Task aliases and patterns for identification
-- Scoring metrics and pass criteria
-- Task weighting for composite scoring
+- Frontend deploys via AWS Amplify
+- Backend runs on AWS Lambda or ECS
+- Never commit AWS credentials
+- Prefer infrastructure-as-code (CDK/SAM/Terraform)
 
-## Model Configuration
-The repository supports various AI models through OpenRouter and direct APIs. Check README.md for current model list including OpenAI, Anthropic, Google, Mistral, and others.
-
-## Container Setup
-CDK evaluations use containerized environments defined in `compose.yaml` files with pre-installed AWS CDK tools.
