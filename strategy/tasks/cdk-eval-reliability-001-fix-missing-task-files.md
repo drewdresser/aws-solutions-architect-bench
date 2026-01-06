@@ -10,9 +10,10 @@ The Makefile references `tasks_no_critique.py` and `tasks_robust.py` which don't
 
 ## Acceptance Criteria
 
-- [ ] Either create the missing task files OR update Makefile to use existing `tasks.py`
-- [ ] `make bench.daily --dry-run` shows valid file paths
-- [ ] CDK task can be imported without errors: `uv run python -c "from evals.cdk_synth.tasks import aws_cdk_synth"`
+- [x] Either create the missing task files OR update Makefile to use existing `tasks.py`
+- [x] `make bench.daily --dry-run` shows valid file paths
+- [x] CDK task can be imported without errors: `uv run python -c "from evals.cdk_synth.tasks import aws_cdk_synth"`
+- [x] CI workflow produces non-zero scores for all three eval tracks (verified in run 20753351490)
 
 ## Technical Notes
 
