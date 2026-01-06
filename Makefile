@@ -37,11 +37,12 @@ RESULTS ?= results
 LATEST_LOGS := $(shell ls -dt $(LOGROOT)/* 2>/dev/null | head -1)
 
 # ---- Meta ----
-.PHONY: help env deps clean eval.practice eval.cdk bench bench.daily board.csv board.json board.simple
+.PHONY: help env deps clean test eval.practice eval.cdk bench bench.daily board.csv board.json board.simple
 
 help:
 	@echo "Targets:"
 	@echo "  deps           - install Python deps via uv"
+	@echo "  test           - run test suite"
 	@echo "  env            - bootstrap .env from example if missing"
 	@echo "  eval.practice  - run MCQ eval (PRACTICE_TASK)"
 	@echo "  eval.cdk       - run CDK eval (CDK_TASK)"
@@ -55,6 +56,9 @@ help:
 # ---- Setup ----
 deps:
 	uv sync
+
+test:
+	uv run pytest tests/ -v
 
 env:
 	@test -f .env || (cp .env.example .env && echo "✓ Created .env from .env.example")

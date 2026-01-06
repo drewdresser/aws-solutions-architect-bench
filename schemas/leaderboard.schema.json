@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/drewdresser/aws-sa-bench/schemas/leaderboard.schema.json",
+  "title": "SA Bench Leaderboard",
+  "description": "Schema for the SA Bench leaderboard JSON output",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["model", "overall"],
+    "properties": {
+      "model": {
+        "type": "string",
+        "description": "Model identifier (e.g., openrouter/anthropic/claude-sonnet-4)"
+      },
+      "practice_exam": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Practice exam (MCQ) score in [0, 1]"
+      },
+      "architecture_design": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Architecture design score in [0, 1]"
+      },
+      "cdk_synth": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "CDK synthesis score in [0, 1]"
+      },
+      "overall": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Weighted overall score in [0, 1]"
+      }
+    },
+    "additionalProperties": true
+  }
+}

@@ -29,9 +29,13 @@ Audit `scripts/aggregate_multi.py` and related aggregation code. Add unit tests 
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [x] [001-fix-weight-normalization](../tasks/scoring-and-aggregation-hardening-001-fix-weight-normalization.md)
+- [x] [002-add-pytest-and-test-infra](../tasks/scoring-and-aggregation-hardening-002-add-pytest-and-test-infra.md)
+- [x] [003-test-weight-normalization](../tasks/scoring-and-aggregation-hardening-003-test-weight-normalization.md)
+- [x] [004-test-aggregation-correctness](../tasks/scoring-and-aggregation-hardening-004-test-aggregation-correctness.md)
+- [x] [005-document-scoring-formula](../tasks/scoring-and-aggregation-hardening-005-document-scoring-formula.md)
+- [x] [006-add-json-schema-validation](../tasks/scoring-and-aggregation-hardening-006-add-json-schema-validation.md)
 
 ## Status
 
-`Not Started`
+`Done`

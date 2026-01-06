@@ -25,6 +25,35 @@ import pandas as pd  # type: ignore
 from inspect_ai.log import list_eval_logs, read_eval_log_sample_summaries, read_eval_log
 from task_registry import TASKS
 
+# Path to JSON schema for leaderboard validation
+SCHEMA_PATH = pathlib.Path(__file__).parent.parent / "schemas" / "leaderboard.schema.json"
+
+
+def validate_leaderboard_json(data: List[Dict[str, Any]]) -> None:
+    """Validate leaderboard data against JSON schema.
+
+    Args:
+        data: List of leaderboard entries to validate
+
+    Raises:
+        jsonschema.ValidationError: If data doesn't match schema
+        FileNotFoundError: If schema file is missing
+    """
+    try:
+        import jsonschema
+    except ImportError:
+        print("[warn] jsonschema not installed, skipping validation")
+        return
+
+    if not SCHEMA_PATH.exists():
+        print(f"[warn] Schema not found at {SCHEMA_PATH}, skipping validation")
+        return
+
+    with open(SCHEMA_PATH) as f:
+        schema = json.load(f)
+
+    jsonschema.validate(instance=data, schema=schema)
+
 
 def scores_to_dict(scores_obj: Any) -> Dict[str, Any]:
     """
@@ -210,7 +239,13 @@ def main():
     print(leaderboard.to_string(index=False))
 
     if args.json_out:
-        leaderboard.to_json(args.json_out, orient="records", indent=2)
+        # Convert to records and validate against schema
+        records = leaderboard.to_dict(orient="records")
+        validate_leaderboard_json(records)
+
+        # Write validated JSON
+        with open(args.json_out, "w") as f:
+            json.dump(records, f, indent=2)
         print(f"JSON leaderboard → {args.json_out}")
 
 

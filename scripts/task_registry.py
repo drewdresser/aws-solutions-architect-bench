@@ -1,22 +1,33 @@
+# ============================================================================
+# Task Registry — Defines evaluation tracks and their scoring configuration
+# ============================================================================
+#
+# Weight Distribution (must sum to 1.0):
+#   - practice_exam:       0.34 (AWS certification-style MCQ knowledge)
+#   - architecture_design: 0.33 (Architectural reasoning and diagram tasks)
+#   - cdk_synth:           0.33 (Infrastructure-as-code generation)
+#
+# Equal weighting reflects that all three capabilities are important for
+# a well-rounded Solutions Architect evaluation. Weights can be adjusted
+# if certain tracks prove more differentiating or reliable.
+# ============================================================================
+
 TASKS = {
     "practice_exam": {
-        "patterns": ["aws-solutions-architect", "practice_exam"],  # ALL aliases
+        "patterns": ["aws-solutions-architect", "practice_exam"],
         "metric": "choice",
-        "pass_values": ["C"],  # <── use "C" for correct, same as CDK
-        "weight": 0.4,
+        "pass_values": ["C"],
+        "weight": 0.34,
     },
     "architecture_design": {
         "patterns": ["architecture-design", "architecture-interpretation"],
-        # The architecture tasks use a custom scorer named architecture_scorer
-        # whose Score.value is already a rubric-normalized float in [0,1].
         "metric": "architecture_scorer",
-        # No pass_values; treat the value directly as accuracy contribution.
-        "weight": 0.6,
+        "weight": 0.33,
     },
     "cdk_synth": {
         "patterns": ["aws-cdk-synth", "cdk_synth"],
         "metric": "cdk_verify",
-        "pass_values": ["C"],  # <── should be "C" for correct, not "P"
-        "weight": 0.6,
+        "pass_values": ["C"],
+        "weight": 0.33,
     },
 }

@@ -36,6 +36,13 @@ Evaluates architectural reasoning across diagram interpretation and solution des
 - **Artifacts**: JSONL samples reference PNG diagrams stored in `diagrams/`; the solver embeds them as base64 images (and also preserves the file path for text-only fallbacks)
 - **Scoring**: Custom heuristic scorer averaging accuracy, completeness, and quality based on rubric metadata
 
+## 📏 Scoring Methodology
+
+See **[docs/SCORING.md](docs/SCORING.md)** for detailed documentation of how scores are computed, including:
+- Per-category scoring methods
+- Overall score formula (weighted average)
+- Weight rationale and normalization
+
 ## 🚀 Quick Start
 
 ### Prerequisites
