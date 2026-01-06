@@ -20,8 +20,8 @@ MODELS  ?= openrouter/anthropic/claude-sonnet-4,openrouter/openai/gpt-4.1,openro
 # Practice (MCQ) task
 PRACTICE_TASK ?= evals/practice_exam/tasks.py
 
-# CDK task variant (pick one): tasks.py | tasks_no_critique.py | tasks_robust.py
-CDK_TASK ?= evals/cdk_synth/tasks_no_critique.py
+# CDK task variant (use tasks.py - the only variant that exists)
+CDK_TASK ?= evals/cdk_synth/tasks.py
 
 # Architecture task
 ARCH_TASK ?= evals/architecture_design/tasks.py
@@ -93,7 +93,7 @@ bench: | $(LOGDIR)
 		--log-dir $(LOGDIR)
 
 bench.daily:
-	@$(MAKE) bench CDK_TASK=evals/cdk_synth/tasks_robust.py LIMIT=0 LOGDIR=$(LOGROOT)/nightly-$(DATE)
+	@$(MAKE) bench CDK_TASK=evals/cdk_synth/tasks.py LIMIT=0 LOGDIR=$(LOGROOT)/nightly-$(DATE)
 
 # ---- Leaderboards ----
 $(RESULTS):

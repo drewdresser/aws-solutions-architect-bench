@@ -29,9 +29,12 @@ Diagnose why current CDK pass rate is 0% in leaderboard. Review `evals/cdk_synth
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [ ] [001-fix-missing-task-files](../tasks/cdk-eval-reliability-001-fix-missing-task-files.md)
+- [ ] [002-diagnose-sandbox-in-ci](../tasks/cdk-eval-reliability-002-diagnose-sandbox-in-ci.md)
+- [ ] [003-improve-code-extraction](../tasks/cdk-eval-reliability-003-improve-code-extraction.md)
+- [ ] [004-add-local-execution-fallback](../tasks/cdk-eval-reliability-004-add-local-execution-fallback.md)
+- [ ] [005-document-failure-modes](../tasks/cdk-eval-reliability-005-document-failure-modes.md)
 
 ## Status
 
-`Not Started`
+`In Progress`
