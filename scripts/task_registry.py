@@ -13,21 +13,24 @@
 # ============================================================================
 
 TASKS = {
-    "practice_exam": {
-        "patterns": ["aws-solutions-architect", "practice_exam"],
-        "metric": "choice",
+    # Order matters! More specific patterns should come first to avoid
+    # broad patterns matching unintended files.
+    "cdk_synth": {
+        "patterns": ["aws-cdk-synth", "aws_cdk_synth", "cdk_synth"],
+        "metric": "cdk_verify",
         "pass_values": ["C"],
-        "weight": 0.34,
+        "weight": 0.33,
     },
     "architecture_design": {
         "patterns": ["architecture-design", "architecture-interpretation"],
         "metric": "architecture_scorer",
         "weight": 0.33,
     },
-    "cdk_synth": {
-        "patterns": ["aws-cdk-synth", "aws_cdk_synth", "cdk_synth"],
-        "metric": "cdk_verify",
+    "practice_exam": {
+        # Use underscore pattern to avoid matching repo name "aws-solutions-architect-bench"
+        "patterns": ["aws-solutions-architect_", "aws_solutions_architect", "practice_exam"],
+        "metric": "choice",
         "pass_values": ["C"],
-        "weight": 0.33,
+        "weight": 0.34,
     },
 }
