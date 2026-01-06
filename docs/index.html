@@ -2,31 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AWS-SA Eval Leaderboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AWS SA Bench - Leaderboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-  <style> tbody tr:hover {background:#f5f5f5;} </style>
+  <style>
+    tbody tr:hover { background: #f5f5f5; }
+    .model-name { font-family: monospace; font-size: 0.9em; }
+    .score { text-align: right; }
+    .score-high { color: #48c774; font-weight: bold; }
+    .score-mid { color: #ffdd57; }
+    .score-low { color: #f14668; }
+    .last-updated { color: #666; font-size: 0.85em; margin-bottom: 1rem; }
+    .methodology { margin-top: 2rem; padding: 1rem; background: #f5f5f5; border-radius: 4px; }
+  </style>
 </head>
 <body class="section">
-  <h1 class="title is-3">AWS Solutions Architect LLM Benchmark</h1>
-  <table id="board" class="table is-striped is-narrow is-hoverable"></table>
+  <div class="container">
+    <h1 class="title is-3">AWS Solutions Architect LLM Benchmark</h1>
+    <p class="subtitle is-5">Measuring LLM performance on real SA tasks</p>
+    <p class="last-updated" id="updated"></p>
+
+    <table id="board" class="table is-striped is-narrow is-hoverable is-fullwidth">
+      <thead id="board-head"></thead>
+      <tbody id="board-body"></tbody>
+    </table>
+
+    <div class="methodology">
+      <h2 class="title is-5">Scoring Methodology</h2>
+      <p>Scores are weighted averages across three categories:</p>
+      <ul>
+        <li><strong>Practice Exam (34%)</strong>: AWS certification-style MCQ</li>
+        <li><strong>Architecture Design (33%)</strong>: Diagram understanding and reasoning</li>
+        <li><strong>CDK Synthesis (33%)</strong>: Infrastructure-as-code generation</li>
+      </ul>
+      <p style="margin-top: 0.5rem;">
+        <a href="https://github.com/drewdresser/aws-sa-bench/blob/main/docs/SCORING.md">Full methodology</a> |
+        <a href="https://github.com/drewdresser/aws-sa-bench">GitHub</a>
+      </p>
+    </div>
+  </div>
 
 <script>
 (async () => {
-  const resp = await fetch('leaderboard.json');          // same folder
-  const rows = await resp.json();
-  // Build header
-  const tasks = Object.keys(rows[0]).filter(k => k!=='model');
-  const th = ['Model', ...tasks, 'Overall']
-      .map(t=>`<th>${t}</th>`).join('');
-  // Build body
-  const body = rows.map(r => {
-    const cells = [r.model, ...tasks.map(t=>r[t]), r.overall]
-      .map(c=>`<td>${(c*100).toFixed(1)}%</td>`)
-      .join('');
-    return `<tr>${cells}</tr>`;
-  }).join('');
-  document.getElementById('board').innerHTML =
-      `<thead><tr>${th}</tr></thead><tbody>${body}</tbody>`;
+  try {
+    const resp = await fetch('leaderboard.json', { cache: 'no-store' });
+    if (!resp.ok) throw new Error('Failed to load leaderboard');
+    const rows = await resp.json();
+
+    // Get score columns (everything except 'model')
+    const scoreCols = Object.keys(rows[0]).filter(k => k !== 'model');
+
+    // Build header
+    const headers = ['Model', ...scoreCols.map(c => c.replace(/_/g, ' '))];
+    document.getElementById('board-head').innerHTML =
+      '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+
+    // Build body
+    const bodyHtml = rows.map(r => {
+      const modelCell = `<td class="model-name">${r.model}</td>`;
+      const scoreCells = scoreCols.map(col => {
+        const val = r[col];
+        const pct = (val * 100).toFixed(1);
+        const cls = val >= 0.8 ? 'score-high' : val >= 0.5 ? 'score-mid' : 'score-low';
+        return `<td class="score ${cls}">${pct}%</td>`;
+      }).join('');
+      return `<tr>${modelCell}${scoreCells}</tr>`;
+    }).join('');
+
+    document.getElementById('board-body').innerHTML = bodyHtml;
+
+    // Set last updated (from file metadata would be ideal, but use current time as fallback)
+    document.getElementById('updated').textContent =
+      'Updated from nightly CI. Scores may vary ±5% between runs.';
+
+  } catch (err) {
+    document.getElementById('board-body').innerHTML =
+      `<tr><td colspan="5">Error loading leaderboard: ${err.message}</td></tr>`;
+  }
 })();
 </script>
 </body>

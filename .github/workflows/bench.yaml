@@ -36,6 +36,9 @@ jobs:
       - name: Sync Python deps
         run: uv sync
 
+      - name: Run tests
+        run: make test
+
       - name: Nightly bench run
         run: |
           make bench.daily
@@ -64,39 +67,30 @@ jobs:
             results/**
           if-no-files-found: warn
 
-      # --- Build a tiny static site for GitHub Pages ---
+      # --- Build static site for GitHub Pages ---
       - name: Build site bundle
-        if: always()
         run: |
           mkdir -p site
+          cp docs/index.html site/
           cp results/leaderboard.csv site/ || true
           cp results/leaderboard.json site/ || true
-          cat > site/index.html <<'HTML'
-          <!doctype html>
-          <html lang="en">
-          <head>
-            <meta charset="utf-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1"/>
-            <title>AWS SA Bench – Leaderboard</title>
-            <style>
-              body { font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; color:#111;}
-              h1 { margin: 0 0 0.5rem 0; }
-              .meta { color:#555; margin-bottom:1rem; }
-              table { border-collapse: collapse; width: 100%; }
-              th, td { border: 1px solid #ddd; padding: .5rem; text-align: left; }
-              th { cursor: pointer; user-select: none; background: #fafafa; }
-              tr:nth-child(even){ background: #fcfcfc; }
-              code { background: #f4f4f4; padding: 0 .2rem; border-radius: 4px; }
-            </style>
-          </head>
-          <body>
-            <h1>Leaderboard</h1>
-            <div class="meta">
-              Latest <code>results/leaderboard.csv</code>. Click headers to sort. Deployed from nightly CI.
-            </div>
-            <div id="table-wrap">Loading…</div>
-            <script>
-              async function load() {
-                try {
-                  const res = await fetch('leaderboard.csv', {cache: 'no-store'});
-                  if (!res.ok) throw new Error('CSV not foun
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  # Separate job for deployment (requires environment)
+  deploy:
+    needs: bench
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

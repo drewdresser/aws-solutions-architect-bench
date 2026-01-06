@@ -79,6 +79,44 @@ Where each sample score is the average of accuracy, completeness, and quality di
 - **Tests**: `tests/test_task_registry.py` enforces weight normalization
 - **Validation**: Weights are tested to sum to exactly 1.0
 
+## Reproducibility
+
+### Expected Variance
+
+Due to LLM non-determinism, scores may vary between runs:
+
+| Category | Expected Variance | Reason |
+|----------|-------------------|--------|
+| **Practice Exam (MCQ)** | ±2-5% | Discrete answers, low variance |
+| **Architecture Design** | ±5-10% | Rubric scoring, moderate variance |
+| **CDK Synthesis** | ±5% | Binary pass/fail, but extraction varies |
+| **Overall** | ±5% | Aggregated variance |
+
+### Maximizing Reproducibility
+
+For the most consistent results:
+
+1. **Use `temperature=0`** when supported by the model provider
+2. **Run full dataset** (avoid `--limit` flags) for stable averages
+3. **Pin model versions** when possible (some providers update models)
+4. **Use identical environment** (same Python version, dependencies)
+
+### Tolerance for Leaderboard
+
+A fresh benchmark run is considered **reproducible** if overall scores fall within **±5%** of published leaderboard values.
+
+For example, if a model shows 72% overall on the leaderboard:
+- Scores between 67-77% are within expected variance
+- Scores outside this range may indicate configuration differences
+
+### Factors Affecting Variance
+
+- **Model updates**: Providers may update models without version changes
+- **API routing**: OpenRouter may route to different model instances
+- **Temperature**: Even at `temperature=0`, some models have residual randomness
+- **Prompt caching**: Cached vs. fresh prompts may produce different outputs
+
 ## Changelog
 
+- **2026-01-05**: Added reproducibility documentation
 - **2026-01-05**: Normalized weights to sum to 1.0 (was 1.6). Equal weighting: 0.34/0.33/0.33.

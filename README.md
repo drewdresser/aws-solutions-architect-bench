@@ -43,26 +43,45 @@ See **[docs/SCORING.md](docs/SCORING.md)** for detailed documentation of how sco
 - Overall score formula (weighted average)
 - Weight rationale and normalization
 
+## 🔄 Reproduce the Leaderboard
+
+Reproduce published leaderboard results with a single command:
+
+```bash
+git clone https://github.com/drewdresser/aws-sa-bench
+cd aws-sa-bench
+uv sync
+cp .env.example .env  # Add your OPENROUTER_API_KEY
+make bench && make board.json
+cat results/leaderboard.json
+```
+
+**Requirements:** Python 3.12+, Docker (running), [uv](https://docs.astral.sh/uv/), OpenRouter API key
+
+**Expected output:** `results/leaderboard.json` and `results/leaderboard.csv` containing model scores across all evaluation categories.
+
+See [Reproducibility](#reproducibility) below for expected variance between runs.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Python 3.12+
 - Docker (for CDK evaluations)
-- uv package manager
+- [uv](https://docs.astral.sh/uv/) package manager
 
 ### Installation
 
 1. **Clone and install dependencies:**
    ```bash
-   git clone <repository-url>
-   cd aws-solutions-architect-bench
+   git clone https://github.com/drewdresser/aws-sa-bench
+   cd aws-sa-bench
    uv sync
    ```
 
 2. **Set up API credentials:**
    ```bash
    cp .env.example .env
-   # Edit .env with your OpenRouter API key
+   # Edit .env with your OPENROUTER_API_KEY
    ```
 
 3. **Run a single evaluation:**
@@ -83,6 +102,12 @@ See **[docs/SCORING.md](docs/SCORING.md)** for detailed documentation of how sco
      --model openrouter/anthropic/claude-sonnet-4 --max-samples 5
    ```
    Models without vision support still receive the textual question and the original diagram path, but results will be stronger with multimodal models.
+
+### Troubleshooting
+
+- **Docker not running:** CDK evaluations require Docker. Start Docker Desktop or `docker daemon`.
+- **API key errors:** Ensure `OPENROUTER_API_KEY` is set in `.env` (not just exported in shell).
+- **uv not found:** Install uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
 ## 🏗️ Architecture
 

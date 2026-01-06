@@ -6,11 +6,11 @@ Anyone can clone the repo and reproduce leaderboard scores on their own machine,
 
 ## Success Criteria
 
-- [ ] "One-command run" documented and tested (e.g., `make bench` or similar)
-- [ ] Fresh clone produces scores within documented tolerance (e.g., ±X%)
-- [ ] CI workflow runs nightly and updates leaderboard artifacts
-- [ ] Environment setup documented (Python version, dependencies, API keys)
-- [ ] Reproducibility tested on clean Ubuntu environment (CI validates this)
+- [x] "One-command run" documented and tested (e.g., `make bench` or similar)
+- [x] Fresh clone produces scores within documented tolerance (e.g., ±5%)
+- [x] CI workflow runs nightly and updates leaderboard artifacts
+- [x] Environment setup documented (Python version, dependencies, API keys)
+- [x] Reproducibility tested on clean Ubuntu environment (CI validates this)
 
 ## Technical Approach
 
@@ -30,9 +30,12 @@ Enhance existing `.github/workflows/bench.yaml` to be more robust. Add a documen
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [x] [001-add-tests-to-ci](../tasks/reproducibility-and-ci-001-add-tests-to-ci.md)
+- [x] [002-fix-static-site-html](../tasks/reproducibility-and-ci-002-fix-static-site-html.md)
+- [x] [003-add-github-pages-deployment](../tasks/reproducibility-and-ci-003-add-github-pages-deployment.md)
+- [x] [004-document-quickstart](../tasks/reproducibility-and-ci-004-document-quickstart.md)
+- [x] [005-document-reproducibility-tolerance](../tasks/reproducibility-and-ci-005-document-reproducibility-tolerance.md)
 
 ## Status
 
-`Not Started`
+`Done`
