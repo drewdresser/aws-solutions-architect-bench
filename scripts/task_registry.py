@@ -25,7 +25,7 @@ TASKS = {
         "weight": 0.33,
     },
     "cdk_synth": {
-        "patterns": ["aws-cdk-synth", "cdk_synth"],
+        "patterns": ["aws-cdk-synth", "aws_cdk_synth", "cdk_synth"],
         "metric": "cdk_verify",
         "pass_values": ["C"],
         "weight": 0.33,
