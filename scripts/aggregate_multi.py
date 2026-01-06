@@ -78,9 +78,13 @@ def detect_task_key(path: str) -> Optional[str]:
     """Return TASK key for this log, or None if no match."""
     # 1) filename / folder substring
     path_str = str(path)
+    # Debug: print what we're checking
+    print(f"[debug] detect_task_key: path={path_str[-60:]}")
     for key, cfg in TASKS.items():
         patterns = list(cfg.get("patterns", []))
+        print(f"[debug]   checking {key}: patterns={patterns}")
         if patterns and any(p in path_str for p in patterns):
+            print(f"[debug]   -> matched {key}")
             return key
 
     # 2) fallback: inspect the dataset-id stored in the header
@@ -167,10 +171,12 @@ def summarise_log(path: str) -> Optional[Dict[str, Any]]:
         return None
 
     task_cfg = TASKS[task_key]
+    print(f"[debug] summarise_log: task_key={task_key}, metric={task_cfg['metric']}")
 
     # Pull per-sample scores
     samples = read_eval_log_sample_summaries(path)
     if not samples:
+        print(f"[debug] summarise_log: no samples found")
         return None
 
     metric = task_cfg["metric"]
@@ -181,6 +187,7 @@ def summarise_log(path: str) -> Optional[Dict[str, Any]]:
 
     # Process all samples
     all_vals = [metric_value(s, task_cfg) for s in samples]
+    print(f"[debug] summarise_log: {len(all_vals)} samples, vals[:5]={all_vals[:5]}")
 
     # Boolean pass/fail or numeric rubric → accuracy in [0,1]
     acc = sum(all_vals) / (len(all_vals) * norm)
@@ -194,6 +201,7 @@ def summarise_log(path: str) -> Optional[Dict[str, Any]]:
         except Exception as e:
             pass
 
+    print(f"[debug] summarise_log: model={model}, accuracy={acc}")
     return {"task": task_key, "model": model, "accuracy": round(acc, 4)}
 
 
