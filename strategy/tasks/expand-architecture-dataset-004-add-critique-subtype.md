@@ -2,7 +2,7 @@
 
 **Epic:** [expand-architecture-dataset.md](../epics/expand-architecture-dataset.md)
 **Size:** `M`
-**Status:** `Todo`
+**Status:** `Done`
 
 ## Context
 

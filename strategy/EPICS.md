@@ -1,6 +1,6 @@
 # Epics Overview
 
-*Last updated: 2026-01-07 (structured-diagram-formats-and-validation completed)*
+*Last updated: 2026-01-07 (expand-architecture-dataset completed)*
 
 ## Epic Summary
 
@@ -13,7 +13,7 @@
 | [llm-judge-architecture-scoring.md](epics/llm-judge-architecture-scoring.md) | O2/KR1, O2/KR2 | High | None | Done |
 | [structured-diagram-formats-and-validation.md](epics/structured-diagram-formats-and-validation.md) | O2/KR3 | Medium | llm-judge-architecture-scoring | Done |
 | [expand-mcq-dataset.md](epics/expand-mcq-dataset.md) | O3/KR1 | Medium | None | Not Started |
-| [expand-architecture-dataset.md](epics/expand-architecture-dataset.md) | O3/KR2 | Medium | structured-diagram-formats-and-validation | Not Started |
+| [expand-architecture-dataset.md](epics/expand-architecture-dataset.md) | O3/KR2 | Medium | structured-diagram-formats-and-validation | Done |
 | [expand-cdk-dataset.md](epics/expand-cdk-dataset.md) | O3/KR3 | Low | cdk-eval-reliability | Not Started |
 | [category-score-reporting.md](epics/category-score-reporting.md) | O3/KR4 | Medium | expand-mcq, expand-architecture, expand-cdk | Not Started |
 | [launch-post-and-positioning.md](epics/launch-post-and-positioning.md) | O4/KR1 | Medium | public-leaderboard-and-release | Not Started |
@@ -40,7 +40,7 @@ Phase 3 (Scoring Improvements) - DONE:      │
                                             │
 Phase 4 (Dataset Expansion):                │
   ├── expand-mcq-dataset ◄──────────────────┤ (no blockers)
-  ├── expand-architecture-dataset ◄─────────┤ (needs structured-diagram)
+  ├── expand-architecture-dataset ◄─────────┤ (DONE)
   └── expand-cdk-dataset ◄──────────────────┤ (needs cdk-eval-reliability)
                                             │
 Phase 5 (Reporting):                        │
@@ -69,7 +69,7 @@ Phase 6 (Launch & Growth):                  │
 
 **Phase 4 — Dataset Expansion** (can parallelize some)
 - **expand-mcq-dataset**: Grow practice exam from ~20 to 50+ questions with domain tagging. No blockers.
-- **expand-architecture-dataset**: Grow from ~8 to 20+ items. Should wait for structured-diagram-formats.
+- **expand-architecture-dataset**: DONE. All 5 tasks complete. Grew from 9 to 28 items with new architecture_critique subtype, 59 unique AWS services covered, all items tagged with aws_services and domains.
 - **expand-cdk-dataset**: Grow from ~20 to 40+ prompts. Must wait for cdk-eval-reliability.
 
 **Phase 5 — Reporting**
@@ -87,11 +87,11 @@ Phase 6 (Launch & Growth):                  │
 
 | Status | Count | Epics |
 |--------|-------|-------|
-| Done | 6 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation |
+| Done | 7 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset |
 | In Progress | 0 | — |
-| Not Started | 8 | (all others) |
+| Not Started | 7 | (all others) |
 
-**Tasks Created**: 6 epics have tasks defined — all complete (32 total tasks)
+**Tasks Created**: 7 epics have tasks defined — all complete (37 total tasks)
 
 **v0.1.0 Released!** [View on GitHub](https://github.com/drewdresser/aws-solutions-architect-bench/releases/tag/v0.1.0)
 
@@ -101,20 +101,20 @@ Phase 6 (Launch & Growth):                  │
 
 Based on dependencies and priorities:
 
-### Recommended: `expand-architecture-dataset`
+### Recommended: `expand-mcq-dataset`
 
 **Why this epic?**
-- Medium priority for O3/KR2 (Grow dataset)
-- Now unblocked (structured-diagram-formats complete)
-- Grow from ~9 to 20+ architecture items
-- Use new structured output formats in new items
+- Medium priority for O3/KR1 (Grow dataset)
+- No blockers
+- Grow practice exam from ~20 to 50+ questions
+- Will help unblock category-score-reporting
 
 **What it involves:**
-- Add more diagram interpretation tasks (service identification, data flow, security)
-- Add more diagram creation tasks using Mermaid/PlantUML/JSON formats
-- Cover additional AWS patterns and difficulty levels
+- Add more practice exam questions across SA domains
+- Tag questions by topic and difficulty (Associate/Pro)
+- Ensure balanced coverage across AWS certification domains
 
-**Epic file:** [expand-architecture-dataset.md](epics/expand-architecture-dataset.md)
+**Epic file:** [expand-mcq-dataset.md](epics/expand-mcq-dataset.md)
 
 ---
 
@@ -122,9 +122,8 @@ Based on dependencies and priorities:
 
 | Option | Priority | Notes |
 |--------|----------|-------|
-| **expand-architecture-dataset** | Medium | Now unblocked; grow from 9→20+ items using structured formats. |
-| **expand-cdk-dataset** | Low | Now unblocked; grow from 20→40 prompts. |
 | **expand-mcq-dataset** | Medium | No blockers; grow from 20→50+ questions. |
+| **expand-cdk-dataset** | Low | Now unblocked; grow from 20→40 prompts. |
 | **launch-post-and-positioning** | Medium | Now unblocked (v0.1 released); public write-up about SA Bench. |
 | **log-transparency-and-drilldown** | Medium | Now unblocked; add clickable detailed log viewer to leaderboard. |
 
@@ -133,7 +132,7 @@ Based on dependencies and priorities:
 ## Risk Areas
 
 - **CDK pass rate at 0%** — Local execution fallback added; needs validation in CI
-- **Dataset expansion volume** — Growing from 20 to 50+ items across tracks is significant effort
+- **Dataset expansion volume** — Growing from 20 to 50+ items across remaining tracks (MCQ, CDK) is significant effort
 - **External adoption** — Getting credible mentions requires the benchmark to be genuinely useful
 
 ---

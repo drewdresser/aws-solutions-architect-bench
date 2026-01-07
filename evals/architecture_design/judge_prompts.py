@@ -207,6 +207,49 @@ The model was asked to identify cost factors and optimization opportunities.
 {response}
 """,
 
+    ("diagram_interpretation", "architecture_critique"): """
+## Task Type: Architecture Critique / Tradeoff Analysis
+The model was asked to review an architecture and identify issues, suggest improvements, and analyze trade-offs.
+
+## Expected Issues
+{expected_issues}
+
+## Expected Improvements
+{expected_improvements}
+
+## Tradeoffs to Discuss
+{tradeoffs_to_discuss}
+
+## Relevant Well-Architected Pillars
+{waf_pillars_relevant}
+
+## Scoring Guidance
+
+### Accuracy (0.0-1.0)
+- **0.9-1.0**: Correctly identifies all major issues with proper terminology and context
+- **0.7-0.89**: Most issues identified correctly, minor gaps
+- **0.5-0.69**: Core issues found, some missed or mischaracterized
+- **0.3-0.49**: Limited issue identification, significant gaps
+- **0.0-0.29**: Misses critical issues or provides incorrect analysis
+
+### Completeness (0.0-1.0)
+- **0.9-1.0**: Issues, improvements, AND trade-offs all addressed thoroughly with prioritization
+- **0.7-0.89**: Good coverage across all three areas
+- **0.5-0.69**: Partial coverage, missing one area
+- **0.3-0.49**: Missing significant areas or very shallow coverage
+- **0.0-0.29**: Incomplete analysis, barely addresses requirements
+
+### Quality (0.0-1.0)
+- **0.9-1.0**: References Well-Architected Framework pillars, explains WHY changes help, quantifies trade-offs
+- **0.7-0.89**: Good reasoning for recommendations, mentions best practices
+- **0.5-0.69**: Adequate explanations, some justification
+- **0.3-0.49**: Superficial reasoning, recommendations without justification
+- **0.0-0.29**: Poor justification, generic or incorrect advice
+
+## Response to Evaluate
+{response}
+""",
+
     # === DIAGRAM CREATION SUBTYPES ===
     ("diagram_creation", "requirements_to_architecture"): """
 ## Task Type: Requirements to Architecture Design
@@ -374,6 +417,12 @@ HIDDEN_CRITERIA: Dict[str, List[str]] = {
         "Addresses risk mitigation",
         "Includes rollback strategy",
         "Considers testing/validation approach",
+    ],
+    "architecture_critique": [
+        "References specific Well-Architected Framework pillars by name",
+        "Quantifies trade-offs (cost estimates, latency impact, availability percentages)",
+        "Prioritizes improvements by impact and effort",
+        "Distinguishes between critical issues and minor improvements",
     ],
 }
 

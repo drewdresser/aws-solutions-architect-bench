@@ -4,10 +4,11 @@
 # dependencies = [
 #   "openai>=1.0",
 #   "pydantic>=2.0",
+#   "python-dotenv>=1.0",
 # ]
 # ///
 """
-Generate architecture evaluation items using OpenAI API.
+Generate architecture evaluation items using OpenAI API (via OpenRouter).
 
 Usage:
     uv run scripts/generate_arch_items.py --subtype service_identification --difficulty intermediate --count 2
@@ -17,12 +18,17 @@ Usage:
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Literal
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+# Load environment variables
+load_dotenv()
 
 # === Constants ===
 
@@ -293,21 +299,25 @@ def generate_item(
             output_format = "mermaid"  # Default
         user_prompt = get_creation_prompt(subtype, difficulty, output_format, scenario)
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_prompt},
-        ],
-        response_format={"type": "json_object"},
-        temperature=0.7,
-    )
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_prompt},
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.7,
+        )
 
-    content = response.choices[0].message.content
-    if not content:
-        raise ValueError("Empty response from OpenAI")
+        content = response.choices[0].message.content
+        if not content:
+            raise ValueError("Empty response from API")
 
-    return json.loads(content)
+        return json.loads(content)
+    except Exception as e:
+        print(f"  API Error: {e}", file=sys.stderr)
+        raise
 
 
 def validate_item(item: dict) -> tuple[bool, str | None]:
@@ -405,8 +415,8 @@ Examples:
     )
     parser.add_argument(
         "--model",
-        default="gpt-4o",
-        help="OpenAI model to use (default: gpt-4o)",
+        default="openai/gpt-4o",
+        help="Model to use via OpenRouter (default: openai/gpt-4o)",
     )
 
     args = parser.parse_args()
@@ -416,8 +426,20 @@ Examples:
         args.output_format = "mermaid"
         print(f"Note: Using default output_format 'mermaid' for diagram creation item")
 
-    # Initialize OpenAI client
-    client = OpenAI()
+    # Initialize OpenAI client (via OpenRouter)
+    api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        print("Error: Set OPENROUTER_API_KEY or OPENAI_API_KEY environment variable", file=sys.stderr)
+        sys.exit(1)
+
+    # Use OpenRouter if OPENROUTER_API_KEY is set
+    if os.environ.get("OPENROUTER_API_KEY"):
+        client = OpenAI(
+            api_key=api_key,
+            base_url="https://openrouter.ai/api/v1",
+        )
+    else:
+        client = OpenAI(api_key=api_key)
 
     output_path = Path(args.output)
     next_id = get_next_id(output_path)
