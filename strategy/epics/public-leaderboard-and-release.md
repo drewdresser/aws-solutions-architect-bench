@@ -6,12 +6,12 @@ A public, stable URL where practitioners and researchers can view current benchm
 
 ## Success Criteria
 
-- [ ] Leaderboard hosted at stable public URL (GitHub Pages)
-- [ ] "How scores are computed" documentation visible on leaderboard page
-- [ ] v0.1 release tag created with release notes
-- [ ] Leaderboard displays category-level scores (not just overall)
-- [ ] Mobile-responsive leaderboard design
-- [ ] Last-updated timestamp visible on leaderboard
+- [x] Leaderboard hosted at stable public URL (GitHub Pages)
+- [x] "How scores are computed" documentation visible on leaderboard page
+- [x] v0.1 release tag created with release notes
+- [x] Leaderboard displays category-level scores (not just overall)
+- [x] Mobile-responsive leaderboard design
+- [x] Last-updated timestamp visible on leaderboard
 
 ## Technical Approach
 
@@ -33,9 +33,9 @@ Enhance `docs/index.html` to show methodology and category breakdowns. Set up Gi
 - [x] [001-add-timestamp-metadata](../tasks/public-leaderboard-and-release-001-add-timestamp-metadata.md) — Add generated_at timestamp to leaderboard JSON
 - [x] [002-enhance-leaderboard-ui](../tasks/public-leaderboard-and-release-002-enhance-leaderboard-ui.md) — Category score highlighting and mobile support
 - [x] [003-expand-methodology-section](../tasks/public-leaderboard-and-release-003-expand-methodology-section.md) — Detailed methodology on leaderboard page
-- [ ] [004-create-v01-release](../tasks/public-leaderboard-and-release-004-create-v01-release.md) — Create Git tag and GitHub Release
+- [x] [004-create-v01-release](../tasks/public-leaderboard-and-release-004-create-v01-release.md) — Create Git tag and GitHub Release
 - [x] [005-verify-github-pages-url](../tasks/public-leaderboard-and-release-005-verify-github-pages-url.md) — Verify deployment and document URL
 
 ## Status
 
-`In Progress`
+`Done`

@@ -2,7 +2,7 @@
 
 **Epic:** [public-leaderboard-and-release.md](../epics/public-leaderboard-and-release.md)
 **Size:** `S`
-**Status:** `Todo`
+**Status:** `Done`
 
 ## Context
 

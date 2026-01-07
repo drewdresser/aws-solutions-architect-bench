@@ -9,7 +9,7 @@
 | [scoring-and-aggregation-hardening.md](epics/scoring-and-aggregation-hardening.md) | O1/KR4 | High | None (foundational) | Done |
 | [reproducibility-and-ci.md](epics/reproducibility-and-ci.md) | O1/KR1, O1/KR3 | High | scoring-and-aggregation-hardening | Done |
 | [cdk-eval-reliability.md](epics/cdk-eval-reliability.md) | O2/KR4 | High | None | Done |
-| [public-leaderboard-and-release.md](epics/public-leaderboard-and-release.md) | O1/KR2 | High | scoring-and-aggregation-hardening, reproducibility-and-ci | In Progress |
+| [public-leaderboard-and-release.md](epics/public-leaderboard-and-release.md) | O1/KR2 | High | scoring-and-aggregation-hardening, reproducibility-and-ci | Done |
 | [llm-judge-architecture-scoring.md](epics/llm-judge-architecture-scoring.md) | O2/KR1, O2/KR2 | High | None | Not Started |
 | [structured-diagram-formats-and-validation.md](epics/structured-diagram-formats-and-validation.md) | O2/KR3 | Medium | llm-judge-architecture-scoring | Not Started |
 | [expand-mcq-dataset.md](epics/expand-mcq-dataset.md) | O3/KR1 | Medium | None | Not Started |
@@ -84,11 +84,13 @@ Phase 6 (Launch & Growth):                  │
 
 | Status | Count | Epics |
 |--------|-------|-------|
-| Done | 3 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability |
-| In Progress | 1 | public-leaderboard-and-release |
+| Done | 4 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release |
+| In Progress | 0 | — |
 | Not Started | 9 | (all others) |
 
-**Tasks Created**: 4 epics have tasks defined — 3 complete, 1 in progress (public-leaderboard-and-release: 5 tasks)
+**Tasks Created**: 4 epics have tasks defined — all complete (22 total tasks)
+
+**v0.1.0 Released!** [View on GitHub](https://github.com/drewdresser/aws-solutions-architect-bench/releases/tag/v0.1.0)
 
 ---
 
@@ -96,21 +98,21 @@ Phase 6 (Launch & Growth):                  │
 
 Based on dependencies and priorities:
 
-### Active: `public-leaderboard-and-release` (In Progress)
+### Recommended: `llm-judge-architecture-scoring`
 
-**Tasks to complete:**
+**Why this epic?**
+- High priority for O2 (Make scoring robust)
+- No dependencies — can start immediately
+- Improves architecture scoring beyond keyword heuristics
+- Enables anti-gaming mechanisms for more credible evaluation
 
-| # | Task | Size | Dependencies |
-|---|------|------|--------------|
-| 001 | [Add timestamp metadata](tasks/public-leaderboard-and-release-001-add-timestamp-metadata.md) | S | None |
-| 002 | [Enhance leaderboard UI](tasks/public-leaderboard-and-release-002-enhance-leaderboard-ui.md) | M | None |
-| 003 | [Expand methodology section](tasks/public-leaderboard-and-release-003-expand-methodology-section.md) | S | None |
-| 004 | [Create v0.1 release](tasks/public-leaderboard-and-release-004-create-v01-release.md) | S | 001, 002, 003 |
-| 005 | [Verify GitHub Pages URL](tasks/public-leaderboard-and-release-005-verify-github-pages-url.md) | S | None |
+**What it involves:**
+- Implement LLM-as-judge scoring for architecture tasks
+- Create published rubrics and judge prompts
+- Add anti-gaming mechanisms (hidden test points, multi-judge consistency)
+- Establish scorer quality checks
 
-**Recommended order:** 005 → 001 → 002 → 003 → 004
-
-Start with verifying the URL is working, then add timestamp, enhance UI, expand docs, and finally cut the release.
+**Epic file:** [llm-judge-architecture-scoring.md](epics/llm-judge-architecture-scoring.md)
 
 ---
 
@@ -118,9 +120,9 @@ Start with verifying the URL is working, then add timestamp, enhance UI, expand 
 
 | Option | Priority | Notes |
 |--------|----------|-------|
-| **llm-judge-architecture-scoring** | High | No dependencies; improves architecture scoring beyond keyword heuristics. |
-| **expand-cdk-dataset** | Low | Now unblocked (cdk-eval-reliability done); grow from 20→40 prompts. |
+| **expand-cdk-dataset** | Low | Now unblocked; grow from 20→40 prompts. |
 | **expand-mcq-dataset** | Medium | No blockers; grow from 20→50+ questions. |
+| **launch-post-and-positioning** | Medium | Now unblocked (v0.1 released); public write-up about SA Bench. |
 
 ---
 
