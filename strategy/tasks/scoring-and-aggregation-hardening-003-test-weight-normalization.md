@@ -2,7 +2,7 @@
 
 **Epic:** [scoring-and-aggregation-hardening.md](../epics/scoring-and-aggregation-hardening.md)
 **Size:** `S`
-**Status:** `Todo`
+**Status:** `Done`
 
 ## Context
 

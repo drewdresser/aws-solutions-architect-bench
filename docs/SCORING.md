@@ -27,8 +27,9 @@ SA Bench evaluates models across three categories, each measuring a different as
 - **What it measures**: Infrastructure-as-code generation—ability to produce valid AWS CDK Python code that synthesizes without errors
 - **Dataset**: `evals/cdk_synth/cdk_synth.jsonl`
 - **Scoring**: Binary (1.0 if `cdk synth` succeeds, 0.0 if it fails)
-- **Metric**: `cdk_verify` scorer
+- **Metric**: `cdk_verify` or `cdk_verify_local` scorer
 - **Weight**: 33%
+- **Known issues**: See [CDK_FAILURE_MODES.md](CDK_FAILURE_MODES.md) for extraction, synthesis, and environment failure documentation
 
 ## Overall Score Formula
 

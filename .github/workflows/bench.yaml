@@ -36,12 +36,23 @@ jobs:
       - name: Sync Python deps
         run: uv sync
 
+      - name: Setup Node.js for CDK
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install CDK CLI
+        run: |
+          npm install -g aws-cdk
+          cdk --version
+
       - name: Run tests
         run: make test
 
       - name: Nightly bench run
         run: |
-          make bench.daily
+          # Use local CDK task (no Docker sandbox) for CI reliability
+          make bench.daily CDK_TASK="evals/cdk_synth/tasks.py:aws_cdk_synth_local"
           make board.json
 
       - name: Show leaderboard (Job Summary)

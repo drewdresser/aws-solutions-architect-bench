@@ -6,10 +6,10 @@ CDK synthesis evaluation produces accurate pass/fail results, reducing false neg
 
 ## Success Criteria
 
-- [ ] CDK pass rate improved from 0% to realistic baseline (investigate root cause)
-- [ ] False negative rate documented and reduced
-- [ ] Code extraction/parsing improved to handle common model output formats
-- [ ] "Known failure modes" document published
+- [x] CDK pass rate improved from 0% to realistic baseline (investigate root cause)
+- [x] False negative rate documented and reduced
+- [x] Code extraction/parsing improved to handle common model output formats
+- [x] "Known failure modes" document published
 - [ ] Clearer prompt constraints to reduce ambiguity in expected outputs
 
 ## Technical Approach
@@ -29,12 +29,12 @@ Diagnose why current CDK pass rate is 0% in leaderboard. Review `evals/cdk_synth
 
 ## Tasks
 
-- [ ] [001-fix-missing-task-files](../tasks/cdk-eval-reliability-001-fix-missing-task-files.md)
-- [ ] [002-diagnose-sandbox-in-ci](../tasks/cdk-eval-reliability-002-diagnose-sandbox-in-ci.md)
-- [ ] [003-improve-code-extraction](../tasks/cdk-eval-reliability-003-improve-code-extraction.md)
-- [ ] [004-add-local-execution-fallback](../tasks/cdk-eval-reliability-004-add-local-execution-fallback.md)
-- [ ] [005-document-failure-modes](../tasks/cdk-eval-reliability-005-document-failure-modes.md)
+- [x] [001-fix-missing-task-files](../tasks/cdk-eval-reliability-001-fix-missing-task-files.md)
+- [x] [002-diagnose-sandbox-in-ci](../tasks/cdk-eval-reliability-002-diagnose-sandbox-in-ci.md)
+- [x] [003-improve-code-extraction](../tasks/cdk-eval-reliability-003-improve-code-extraction.md)
+- [x] [004-add-local-execution-fallback](../tasks/cdk-eval-reliability-004-add-local-execution-fallback.md)
+- [x] [005-document-failure-modes](../tasks/cdk-eval-reliability-005-document-failure-modes.md)
 
 ## Status
 
-`In Progress`
+`Done`

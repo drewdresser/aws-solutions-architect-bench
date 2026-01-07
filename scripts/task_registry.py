@@ -16,8 +16,10 @@ TASKS = {
     # Order matters! More specific patterns should come first to avoid
     # broad patterns matching unintended files.
     "cdk_synth": {
+        # Patterns include both Docker (aws_cdk_synth) and local (aws_cdk_synth_local) variants
         "patterns": ["aws-cdk-synth", "aws_cdk_synth", "cdk_synth"],
         "metric": "cdk_verify",
+        "metric_aliases": ["cdk_verify_local"],  # Local variant uses same scoring
         "pass_values": ["C"],
         "weight": 0.33,
     },
