@@ -30,9 +30,12 @@ Enhance `docs/index.html` to show methodology and category breakdowns. Set up Gi
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [x] [001-add-timestamp-metadata](../tasks/public-leaderboard-and-release-001-add-timestamp-metadata.md) — Add generated_at timestamp to leaderboard JSON
+- [x] [002-enhance-leaderboard-ui](../tasks/public-leaderboard-and-release-002-enhance-leaderboard-ui.md) — Category score highlighting and mobile support
+- [x] [003-expand-methodology-section](../tasks/public-leaderboard-and-release-003-expand-methodology-section.md) — Detailed methodology on leaderboard page
+- [ ] [004-create-v01-release](../tasks/public-leaderboard-and-release-004-create-v01-release.md) — Create Git tag and GitHub Release
+- [x] [005-verify-github-pages-url](../tasks/public-leaderboard-and-release-005-verify-github-pages-url.md) — Verify deployment and document URL
 
 ## Status
 
-`Not Started`
+`In Progress`

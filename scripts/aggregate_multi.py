@@ -19,7 +19,8 @@ uv run --script scripts/aggregate_multi.py --log-dir logs \
 
 from __future__ import annotations
 
-import argparse, pathlib, math, json
+import argparse, pathlib, math, json, os
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Union, Optional
 import pandas as pd  # type: ignore
 from inspect_ai.log import list_eval_logs, read_eval_log_sample_summaries, read_eval_log
@@ -243,10 +244,25 @@ def main():
         records = leaderboard.to_dict(orient="records")
         validate_leaderboard_json(records)
 
-        # Write validated JSON
+        # Add metadata
+        metadata = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "run_id": os.environ.get("GITHUB_RUN_ID", f"local-{datetime.now().strftime('%Y%m%d-%H%M%S')}"),
+            "model_count": len(records),
+            "categories": list(TASKS.keys()),
+        }
+
+        # Output format: { "_metadata": {...}, "models": [...] }
+        output = {
+            "_metadata": metadata,
+            "models": records,
+        }
+
+        # Write JSON with metadata
         with open(args.json_out, "w") as f:
-            json.dump(records, f, indent=2)
+            json.dump(output, f, indent=2)
         print(f"JSON leaderboard → {args.json_out}")
+        print(f"  Generated at: {metadata['generated_at']}")
 
 
 if __name__ == "__main__":

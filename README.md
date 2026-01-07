@@ -2,6 +2,7 @@
 
 [![Nightly Benchmark](https://github.com/drewdresser/aws-solutions-architect-bench/actions/workflows/bench.yml/badge.svg)](../../actions/workflows/bench.yml)
 
+**[View Leaderboard](https://drewdresser.github.io/aws-solutions-architect-bench/)** | [Scoring Methodology](docs/SCORING.md) | [Reproduce Results](#-reproduce-the-leaderboard)
 
 A comprehensive evaluation framework for testing AI model performance on real-world AWS Solutions Architect tasks. This benchmark goes beyond simple multiple-choice questions to evaluate practical skills that AWS Solutions Architects use daily.
 
@@ -26,8 +27,9 @@ Multiple-choice questions covering AWS Solutions Architect certification topics.
 ### 2. AWS CDK Synthesis (`evals/cdk_synth/`)
 Tests ability to generate valid AWS CDK Python code that compiles and passes validation.
 - **Format**: Code generation from natural language requirements
-- **Validation**: Docker-based environment with `cdk synth` and `cfn-lint`
+- **Validation**: `cdk synth` and optional `cfn-lint` (Docker or local execution)
 - **Real-world focus**: Common infrastructure patterns and use cases
+- **Known issues**: See [docs/CDK_FAILURE_MODES.md](docs/CDK_FAILURE_MODES.md) for troubleshooting
 
 ### 3. AWS Architecture Design (`evals/architecture_design/`)
 Evaluates architectural reasoning across diagram interpretation and solution design.

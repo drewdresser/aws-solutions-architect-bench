@@ -4,41 +4,147 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AWS SA Bench - Leaderboard</title>
+
+  <!-- Open Graph meta tags for social sharing -->
+  <meta property="og:title" content="AWS Solutions Architect LLM Benchmark" />
+  <meta property="og:description" content="Measuring LLM performance on real AWS Solutions Architect tasks across MCQ, Architecture Design, and CDK Synthesis." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://drewdresser.github.io/aws-solutions-architect-bench/" />
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
   <style>
+    /* Base styles */
     tbody tr:hover { background: #f5f5f5; }
-    .model-name { font-family: monospace; font-size: 0.9em; }
-    .score { text-align: right; }
+    .model-name { font-family: monospace; font-size: 0.9em; white-space: nowrap; }
+    .score { text-align: right; min-width: 70px; }
     .score-high { color: #48c774; font-weight: bold; }
-    .score-mid { color: #ffdd57; }
+    .score-mid { color: #b5a30d; }
     .score-low { color: #f14668; }
     .last-updated { color: #666; font-size: 0.85em; margin-bottom: 1rem; }
-    .methodology { margin-top: 2rem; padding: 1rem; background: #f5f5f5; border-radius: 4px; }
+
+    /* Overall score column highlighting */
+    .overall-score {
+      background: #f0f8ff;
+      font-weight: bold;
+      border-left: 2px solid #3273dc;
+    }
+    th.overall-header {
+      background: #3273dc;
+      color: white;
+    }
+
+    /* Category columns styling */
+    .category-score { font-size: 0.9em; }
+    th.category-header { background: #f5f5f5; font-size: 0.85em; }
+
+    /* Mobile responsive table */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .model-name { min-width: 140px; position: sticky; left: 0; background: white; }
+      tbody tr:hover .model-name { background: #f5f5f5; }
+      .score { min-width: 60px; font-size: 0.85em; }
+      th { font-size: 0.85em; }
+    }
+
+    /* Methodology section */
+    .methodology {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #fafafa;
+      border-radius: 6px;
+      border: 1px solid #e8e8e8;
+    }
+    .methodology h2 { margin-bottom: 1rem; }
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .methodology-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 4px;
+      border-left: 3px solid #3273dc;
+    }
+    .methodology-card h4 { margin-bottom: 0.5rem; color: #363636; }
+    .methodology-card .weight {
+      display: inline-block;
+      background: #3273dc;
+      color: white;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.75em;
+      margin-left: 0.5rem;
+    }
+    .formula-box {
+      background: #363636;
+      color: #f5f5f5;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9em;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .links { margin-top: 1rem; }
+    .links a { margin-right: 1rem; }
   </style>
 </head>
 <body class="section">
   <div class="container">
     <h1 class="title is-3">AWS Solutions Architect LLM Benchmark</h1>
     <p class="subtitle is-5">Measuring LLM performance on real SA tasks</p>
-    <p class="last-updated" id="updated"></p>
+    <p class="last-updated" id="updated">Loading...</p>
 
-    <table id="board" class="table is-striped is-narrow is-hoverable is-fullwidth">
-      <thead id="board-head"></thead>
-      <tbody id="board-body"></tbody>
-    </table>
+    <div class="table-container">
+      <table id="board" class="table is-striped is-narrow is-hoverable is-fullwidth">
+        <thead id="board-head"></thead>
+        <tbody id="board-body"></tbody>
+      </table>
+    </div>
 
     <div class="methodology">
       <h2 class="title is-5">Scoring Methodology</h2>
-      <p>Scores are weighted averages across three categories:</p>
-      <ul>
-        <li><strong>Practice Exam (34%)</strong>: AWS certification-style MCQ</li>
-        <li><strong>Architecture Design (33%)</strong>: Diagram understanding and reasoning</li>
-        <li><strong>CDK Synthesis (33%)</strong>: Infrastructure-as-code generation</li>
-      </ul>
-      <p style="margin-top: 0.5rem;">
-        <a href="https://github.com/drewdresser/aws-sa-bench/blob/main/docs/SCORING.md">Full methodology</a> |
-        <a href="https://github.com/drewdresser/aws-sa-bench">GitHub</a>
-      </p>
+
+      <div class="methodology-grid">
+        <div class="methodology-card">
+          <h4>Practice Exam <span class="weight">34%</span></h4>
+          <p>AWS certification-style multiple-choice questions covering core services, architecture patterns, and best practices. Binary scoring: correct or incorrect.</p>
+        </div>
+        <div class="methodology-card">
+          <h4>Architecture Design <span class="weight">33%</span></h4>
+          <p>Diagram understanding and architectural reasoning tasks. Models analyze AWS architectures, identify services, trace data flows, and assess risks. Rubric-based scoring.</p>
+        </div>
+        <div class="methodology-card">
+          <h4>CDK Synthesis <span class="weight">33%</span></h4>
+          <p>Infrastructure-as-code generation using AWS CDK (Python). Code must successfully synthesize to CloudFormation. Binary scoring: synth passes or fails.</p>
+        </div>
+      </div>
+
+      <h4 class="title is-6" style="margin-top: 1.5rem;">Overall Score Formula</h4>
+      <div class="formula-box">
+        Overall = 0.34 × practice_exam + 0.33 × architecture_design + 0.33 × cdk_synth
+      </div>
+
+      <h4 class="title is-6">Reproducibility</h4>
+      <p>Scores may vary <strong>±5%</strong> between runs due to LLM non-determinism, model updates, and API routing. To reproduce results:</p>
+      <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>Clone the repository</li>
+        <li>Run <code>uv sync && make bench && make board.json</code></li>
+        <li>Compare <code>results/leaderboard.json</code></li>
+      </ol>
+
+      <div class="links">
+        <a href="https://github.com/drewdresser/aws-solutions-architect-bench/blob/main/docs/SCORING.md">Full Methodology</a>
+        <a href="https://github.com/drewdresser/aws-solutions-architect-bench/blob/main/docs/CDK_FAILURE_MODES.md">CDK Failure Modes</a>
+        <a href="https://github.com/drewdresser/aws-solutions-architect-bench">GitHub Repository</a>
+      </div>
     </div>
   </div>
 
@@ -47,37 +153,92 @@
   try {
     const resp = await fetch('leaderboard.json', { cache: 'no-store' });
     if (!resp.ok) throw new Error('Failed to load leaderboard');
-    const rows = await resp.json();
+    const data = await resp.json();
 
-    // Get score columns (everything except 'model')
-    const scoreCols = Object.keys(rows[0]).filter(k => k !== 'model');
+    // Handle both new format (with metadata) and old format (flat array)
+    let rows, metadata;
+    if (data._metadata && data.models) {
+      // New format
+      metadata = data._metadata;
+      rows = data.models;
+    } else if (Array.isArray(data)) {
+      // Old format (backwards compatibility)
+      rows = data;
+      metadata = null;
+    } else {
+      throw new Error('Unknown leaderboard format');
+    }
+
+    if (!rows || rows.length === 0) {
+      throw new Error('No model data found');
+    }
+
+    // Define column order: model, overall, then categories
+    const categoryOrder = ['practice_exam', 'architecture_design', 'cdk_synth'];
+    const allCols = Object.keys(rows[0]).filter(k => k !== 'model');
+
+    // Put overall first, then categories in order
+    const scoreCols = ['overall', ...categoryOrder.filter(c => allCols.includes(c))];
+
+    // Column display names
+    const colNames = {
+      'overall': 'Overall',
+      'practice_exam': 'Practice Exam',
+      'architecture_design': 'Architecture',
+      'cdk_synth': 'CDK Synth'
+    };
 
     // Build header
-    const headers = ['Model', ...scoreCols.map(c => c.replace(/_/g, ' '))];
-    document.getElementById('board-head').innerHTML =
-      '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+    const headerHtml = '<tr>' +
+      '<th>Model</th>' +
+      scoreCols.map(col => {
+        const isOverall = col === 'overall';
+        const cls = isOverall ? 'overall-header' : 'category-header';
+        const name = colNames[col] || col.replace(/_/g, ' ');
+        return `<th class="${cls}">${name}</th>`;
+      }).join('') +
+      '</tr>';
+    document.getElementById('board-head').innerHTML = headerHtml;
+
+    // Sort rows by overall score (descending)
+    rows.sort((a, b) => (b.overall || 0) - (a.overall || 0));
 
     // Build body
     const bodyHtml = rows.map(r => {
       const modelCell = `<td class="model-name">${r.model}</td>`;
       const scoreCells = scoreCols.map(col => {
-        const val = r[col];
+        const val = r[col] || 0;
         const pct = (val * 100).toFixed(1);
-        const cls = val >= 0.8 ? 'score-high' : val >= 0.5 ? 'score-mid' : 'score-low';
-        return `<td class="score ${cls}">${pct}%</td>`;
+        const colorCls = val >= 0.8 ? 'score-high' : val >= 0.5 ? 'score-mid' : 'score-low';
+        const isOverall = col === 'overall';
+        const typeCls = isOverall ? 'overall-score' : 'category-score';
+        return `<td class="score ${colorCls} ${typeCls}">${pct}%</td>`;
       }).join('');
       return `<tr>${modelCell}${scoreCells}</tr>`;
     }).join('');
 
     document.getElementById('board-body').innerHTML = bodyHtml;
 
-    // Set last updated (from file metadata would be ideal, but use current time as fallback)
-    document.getElementById('updated').textContent =
-      'Updated from nightly CI. Scores may vary ±5% between runs.';
+    // Set last updated timestamp
+    let updatedText = 'Scores may vary ±5% between runs.';
+    if (metadata && metadata.generated_at) {
+      const date = new Date(metadata.generated_at);
+      const formatted = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+      updatedText = `Last updated: ${formatted}. ${updatedText}`;
+    }
+    document.getElementById('updated').textContent = updatedText;
 
   } catch (err) {
     document.getElementById('board-body').innerHTML =
       `<tr><td colspan="5">Error loading leaderboard: ${err.message}</td></tr>`;
+    document.getElementById('updated').textContent = 'Failed to load data';
   }
 })();
 </script>
