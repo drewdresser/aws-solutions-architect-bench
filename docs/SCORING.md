@@ -19,8 +19,10 @@ SA Bench evaluates models across three categories, each measuring a different as
 - **What it measures**: Architectural reasoning, diagram understanding, data flow analysis, security assessment, and scalability analysis
 - **Dataset**: `evals/architecture_design/architecture_interpretation.jsonl`
 - **Scoring**: Rubric-based score in [0, 1] combining accuracy, completeness, and quality dimensions
-- **Metric**: Custom `architecture_scorer`
+- **Metric**: `architecture_scorer` (heuristic) or `llm_judge_scorer` (LLM-as-judge)
 - **Weight**: 33%
+- **Detailed rubrics**: See [ARCHITECTURE_SCORING.md](ARCHITECTURE_SCORING.md) for LLM judge rubrics and anti-gaming mechanisms
+- **Structured outputs**: See [STRUCTURED_OUTPUTS.md](STRUCTURED_OUTPUTS.md) for diagram format validation (Mermaid, PlantUML, JSON)
 
 ### CDK Synthesis
 

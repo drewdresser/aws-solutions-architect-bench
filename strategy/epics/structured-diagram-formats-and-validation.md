@@ -6,11 +6,11 @@ Diagram generation tasks produce outputs in standardized formats (Mermaid/PlantU
 
 ## Success Criteria
 
-- [ ] Diagram generation tasks specify required output format (Mermaid, PlantUML, or JSON schema)
-- [ ] Automatic structural validation: output parses correctly
-- [ ] Required nodes/edges validation: key components present
-- [ ] Documentation of accepted formats and validation rules
-- [ ] Sample valid/invalid outputs for each format
+- [x] Diagram generation tasks specify required output format (Mermaid, PlantUML, or JSON schema)
+- [x] Automatic structural validation: output parses correctly
+- [x] Required nodes/edges validation: key components present
+- [x] Documentation of accepted formats and validation rules
+- [x] Sample valid/invalid outputs for each format
 
 ## Technical Approach
 
@@ -29,9 +29,12 @@ Update architecture dataset items to specify output format requirements. Impleme
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [x] [001-implement-parsers](../tasks/structured-diagram-formats-001-implement-parsers.md) — Mermaid and PlantUML validators
+- [x] [002-create-json-schema](../tasks/structured-diagram-formats-002-create-json-schema.md) — JSON schema for architecture descriptions
+- [x] [003-integrate-validation](../tasks/structured-diagram-formats-003-integrate-validation.md) — Validation in scorer pipeline
+- [x] [004-update-dataset](../tasks/structured-diagram-formats-004-update-dataset.md) — Add format requirements to dataset items
+- [x] [005-create-documentation](../tasks/structured-diagram-formats-005-create-documentation.md) — Documentation and examples
 
 ## Status
 
-`Not Started`
+`Done`

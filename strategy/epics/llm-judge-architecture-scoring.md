@@ -30,9 +30,12 @@ Replace keyword-based `score_*` functions in `evals/architecture_design/tasks.py
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [x] [001-implement-judge-scorer](../tasks/llm-judge-architecture-scoring-001-implement-judge-scorer.md) — LLM-as-judge scorer infrastructure
+- [x] [002-create-rubric-prompts](../tasks/llm-judge-architecture-scoring-002-create-rubric-prompts.md) — Subtype-specific rubric prompts
+- [x] [003-add-anti-gaming](../tasks/llm-judge-architecture-scoring-003-add-anti-gaming.md) — Anti-gaming mechanisms
+- [x] [004-calibration-tests](../tasks/llm-judge-architecture-scoring-004-calibration-tests.md) — Calibration set and agreement measurement
+- [x] [005-publish-rubric-docs](../tasks/llm-judge-architecture-scoring-005-publish-rubric-docs.md) — Public rubric documentation
 
 ## Status
 
-`Not Started`
+`Done`
