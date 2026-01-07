@@ -29,9 +29,12 @@ Add new items to `evals/architecture_design/architecture_interpretation.jsonl`. 
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [ ] [001-create-generation-script](../tasks/expand-architecture-dataset-001-create-generation-script.md) — Create PEP723 script using OpenAI API to generate items
+- [ ] [002-expand-interpretation-items](../tasks/expand-architecture-dataset-002-expand-interpretation-items.md) — Generate 6-8 new diagram interpretation items
+- [ ] [003-expand-creation-items](../tasks/expand-architecture-dataset-003-expand-creation-items.md) — Generate 5-6 new diagram creation items
+- [ ] [004-add-critique-subtype](../tasks/expand-architecture-dataset-004-add-critique-subtype.md) — Add architecture critique/tradeoff analysis subtype with 3-4 items
+- [ ] [005-review-and-tag](../tasks/expand-architecture-dataset-005-review-and-tag.md) — Review, validate, and add consistent tagging to all items
 
 ## Status
 
-`Not Started`
+`In Progress`
