@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative elements -->
+  <circle cx="1100" cy="100" r="200" fill="#3273dc" opacity="0.1"/>
+  <circle cx="100" cy="530" r="150" fill="#48c774" opacity="0.1"/>
+
+  <!-- Title -->
+  <text x="600" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">SA Bench</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="#a0a0a0" text-anchor="middle">AI Solutions Architect Benchmark</text>
+
+  <!-- Divider -->
+  <rect x="400" y="310" width="400" height="2" fill="#3273dc"/>
+
+  <!-- Categories -->
+  <g font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#e0e0e0">
+    <text x="200" y="400" text-anchor="middle">Practice Exam</text>
+    <text x="600" y="400" text-anchor="middle">Architecture Design</text>
+    <text x="1000" y="400" text-anchor="middle">CDK Synthesis</text>
+  </g>
+
+  <!-- Category weights -->
+  <g font-family="monospace" font-size="18" fill="#3273dc">
+    <text x="200" y="435" text-anchor="middle">34%</text>
+    <text x="600" y="435" text-anchor="middle">33%</text>
+    <text x="1000" y="435" text-anchor="middle">33%</text>
+  </g>
+
+  <!-- Bars representing scores -->
+  <g fill="#3273dc" opacity="0.8">
+    <rect x="130" y="460" width="140" height="8" rx="4"/>
+    <rect x="530" y="460" width="140" height="8" rx="4"/>
+    <rect x="930" y="460" width="140" height="8" rx="4"/>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#666" text-anchor="middle">Measuring LLM performance on real AWS Solutions Architect tasks</text>
+
+  <!-- URL -->
+  <text x="600" y="600" font-family="monospace" font-size="16" fill="#3273dc" text-anchor="middle">drewdresser.github.io/aws-solutions-architect-bench</text>
+</svg>
