@@ -37,7 +37,7 @@ RESULTS ?= results
 LATEST_LOGS := $(shell ls -dt $(LOGROOT)/* 2>/dev/null | head -1)
 
 # ---- Meta ----
-.PHONY: help env deps clean test eval.practice eval.cdk bench bench.daily board.csv board.json board.simple
+.PHONY: help env deps clean test eval.practice eval.cdk bench bench.daily board.csv board.json board.simple bundle.logs
 
 help:
 	@echo "Targets:"
@@ -51,6 +51,7 @@ help:
 	@echo "  board.csv      - weighted leaderboard -> results/leaderboard.csv (LATEST_LOGS)"
 	@echo "  board.json     - same as above + JSON"
 	@echo "  board.simple   - single-run aggregate via scripts/aggregate_inspect.py"
+	@echo "  bundle.logs    - bundle evaluation logs for static viewing"
 	@echo "Vars: MODELS, LIMIT, LOGDIR, PRACTICE_TASK, CDK_TASK, LOGROOT, RESULTS"
 
 # ---- Setup ----
@@ -123,6 +124,12 @@ board.simple: | $(RESULTS)
 	$(PY) scripts/aggregate_inspect.py \
 		--log-dir $(LATEST_LOGS) > $(RESULTS)/aggregate.txt
 	@echo "✓ Wrote $(RESULTS)/aggregate.txt"
+
+# ---- Log Bundling ----
+bundle.logs:
+	@echo "▶ Bundling evaluation logs for static viewing"
+	./scripts/bundle_logs.sh
+	@echo "✓ Logs bundled to docs/logs/"
 
 # ---- Misc ----
 $(LOGDIR):

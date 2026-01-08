@@ -1,10 +1,23 @@
-# AWS Solutions Architect Bench
+# SA Bench
 
+[![Leaderboard](https://img.shields.io/badge/Leaderboard-Live-brightgreen)](https://drewdresser.github.io/aws-solutions-architect-bench/)
 [![Nightly Benchmark](https://github.com/drewdresser/aws-solutions-architect-bench/actions/workflows/bench.yml/badge.svg)](../../actions/workflows/bench.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**[View Leaderboard](https://drewdresser.github.io/aws-solutions-architect-bench/)** | [Scoring Methodology](docs/SCORING.md) | [Reproduce Results](#-reproduce-the-leaderboard)
+> Measuring LLM performance on AWS Solutions Architect tasks
 
-A comprehensive evaluation framework for testing AI model performance on real-world AWS Solutions Architect tasks. This benchmark goes beyond simple multiple-choice questions to evaluate practical skills that AWS Solutions Architects use daily.
+**[Live Leaderboard](https://drewdresser.github.io/aws-solutions-architect-bench/)** | **[Launch Post](docs/LAUNCH_POST.md)** | [Scoring Methodology](docs/SCORING.md) | [Reproduce Results](#-reproduce-the-leaderboard)
+
+## What is SA Bench?
+
+SA Bench is an open-source benchmark that evaluates AI models on real AWS Solutions Architect work—not just certification questions, but practical tasks like architecture design and infrastructure-as-code generation.
+
+**Current findings:**
+- Top models score 95% on certification-style questions but under 10% on CDK code generation
+- The gap between "knowing the answer" and "writing working code" is enormous
+- Model choice matters significantly (35 percentage point spread on practice exams)
+
+Read the [full launch post](docs/LAUNCH_POST.md) for methodology details and analysis.
 
 ## 🎯 Vision
 
