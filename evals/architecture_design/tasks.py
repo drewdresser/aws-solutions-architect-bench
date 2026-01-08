@@ -28,16 +28,32 @@ from inspect_ai.model import (
 from inspect_ai.scorer import Score, Scorer, Target, mean, metric, scorer
 from inspect_ai.solver import Generate, Solver, TaskState, generate, solver
 
-from .judge_prompts import (
-    JUDGE_SYSTEM_PROMPT,
-    format_rubric_prompt,
-    get_hidden_criteria,
-)
-from .diagram_validators import (
-    validate_structured_output,
-    check_required_components,
-    ValidationResult,
-)
+# Support both relative imports (when run as package) and absolute imports (when loaded by inspect-ai)
+try:
+    from .judge_prompts import (
+        JUDGE_SYSTEM_PROMPT,
+        format_rubric_prompt,
+        get_hidden_criteria,
+    )
+    from .diagram_validators import (
+        validate_structured_output,
+        check_required_components,
+        ValidationResult,
+    )
+except ImportError:
+    # Fallback for inspect-ai direct module loading
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    from judge_prompts import (
+        JUDGE_SYSTEM_PROMPT,
+        format_rubric_prompt,
+        get_hidden_criteria,
+    )
+    from diagram_validators import (
+        validate_structured_output,
+        check_required_components,
+        ValidationResult,
+    )
 
 logger = logging.getLogger(__name__)
 
