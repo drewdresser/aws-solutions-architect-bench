@@ -1,6 +1,6 @@
 # Epics Overview
 
-*Last updated: 2026-01-07 (category-score-reporting completed)*
+*Last updated: 2026-01-08 (leaderboard-scoring-investigation created)*
 
 ## Epic Summary
 
@@ -20,6 +20,7 @@
 | [credibility-and-distribution.md](epics/credibility-and-distribution.md) | O4/KR2 | Low | launch-post-and-positioning | Not Started |
 | [contribution-workflow.md](epics/contribution-workflow.md) | O4/KR3 | Low | public-leaderboard-and-release | Not Started |
 | [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md) | O1/KR2, O4 | Medium | public-leaderboard-and-release | Done |
+| [leaderboard-scoring-investigation.md](epics/leaderboard-scoring-investigation.md) | O1/KR2 | High | public-leaderboard-and-release | Not Started |
 
 ---
 
@@ -89,11 +90,11 @@ Phase 6 (Launch & Growth):                  │
 |--------|-------|-------|
 | Done | 12 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset, expand-mcq-dataset, launch-post-and-positioning, expand-cdk-dataset, log-transparency-and-drilldown, category-score-reporting |
 | In Progress | 0 | — |
-| Not Started | 2 | credibility-and-distribution, contribution-workflow |
+| Not Started | 3 | leaderboard-scoring-investigation, credibility-and-distribution, contribution-workflow |
 
-**Tasks Created**: 12 epics have tasks defined (68 total tasks)
+**Tasks Created**: 13 epics have tasks defined (72 total tasks)
 
-**v0.1.0 Released!** [View on GitHub](https://github.com/drewdresser/aws-solutions-architect-bench/releases/tag/v0.1.0)
+**v0.2.0 Released!** [View on GitHub](https://github.com/drewdresser/aws-solutions-architect-bench/releases/tag/v0.2.0)
 
 ---
 
@@ -101,7 +102,21 @@ Phase 6 (Launch & Growth):                  │
 
 Based on dependencies and priorities:
 
-### Up Next: `credibility-and-distribution`
+### Up Next: `leaderboard-scoring-investigation` (HIGH PRIORITY)
+
+**Status:** Not Started
+
+**Description:** Investigate and fix scoring issues: update to latest models, fix log viewer filtering, investigate missing architecture images, debug low practice exam scores.
+
+**Epic file:** [leaderboard-scoring-investigation.md](epics/leaderboard-scoring-investigation.md)
+
+**Tasks:**
+1. Update to latest frontier models (gpt-5.2, claude-sonnet-4.5)
+2. Fix log viewer to show only selected model's logs
+3. Investigate missing images in architecture tasks
+4. Investigate low/zero practice exam scores
+
+### Later: `credibility-and-distribution`
 
 **Status:** Not Started
 
@@ -109,7 +124,7 @@ Based on dependencies and priorities:
 
 **Epic file:** [credibility-and-distribution.md](epics/credibility-and-distribution.md)
 
-### Up Next: `contribution-workflow`
+### Later: `contribution-workflow`
 
 **Status:** Not Started
 
@@ -121,9 +136,10 @@ Based on dependencies and priorities:
 
 ## Risk Areas
 
-- **CDK pass rate at 0%** — Local execution fallback added; needs validation in CI
-- **Dataset expansion volume** — Growing from 20 to 50+ items across remaining tracks (MCQ, CDK) is significant effort
-- **External adoption** — Getting credible mentions requires the benchmark to be genuinely useful
+- **Low/zero practice exam scores** — Frontier models showing unexpectedly low scores; needs investigation
+- **Missing architecture images** — Some tasks expecting images may not be loading them correctly
+- **Log viewer filtering** — Currently shows all models instead of selected model
+- **External adoption** — Getting credible mentions requires the benchmark to be genuinely useful and accurate
 
 ---
 
