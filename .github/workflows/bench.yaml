@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      ARCHITECTURE_JUDGE_MODEL: openrouter/openai/gpt-5.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
