@@ -6,11 +6,11 @@ A larger CDK dataset with domain-tagged prompts provides more comprehensive IaC 
 
 ## Success Criteria
 
-- [ ] CDK track grown from 20 to at least 40 prompts
-- [ ] Prompts tagged by domain (networking, serverless, security, data, etc.)
-- [ ] Documented "prompt contract" specifying expected output format
-- [ ] Reduced ambiguity in prompt requirements
-- [ ] Coverage of common CDK patterns (VPC, Lambda, API Gateway, DynamoDB, etc.)
+- [x] CDK track grown from 20 to at least 40 prompts
+- [x] Prompts tagged by domain (networking, serverless, security, data, etc.)
+- [x] Documented "prompt contract" specifying expected output format
+- [x] Reduced ambiguity in prompt requirements
+- [x] Coverage of common CDK patterns (VPC, Lambda, API Gateway, DynamoDB, etc.)
 
 ## Technical Approach
 
@@ -29,9 +29,12 @@ Add new prompts to `evals/cdk_synth/cdk_synth.jsonl`. Define clear prompt contra
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [x] [001-create-generation-script](../tasks/expand-cdk-dataset-001-create-generation-script.md) — Create CDK item generation script (M)
+- [x] [002-expand-beginner-items](../tasks/expand-cdk-dataset-002-expand-beginner-items.md) — Generate 10 beginner-level items (M)
+- [x] [003-expand-advanced-items](../tasks/expand-cdk-dataset-003-expand-advanced-items.md) — Generate 10 advanced-level items (M)
+- [x] [004-add-metadata-to-existing](../tasks/expand-cdk-dataset-004-add-metadata-to-existing.md) — Add metadata to existing 20 items (S)
+- [x] [005-review-and-document](../tasks/expand-cdk-dataset-005-review-and-document.md) — Review dataset and document prompt contract (S)
 
 ## Status
 
-`Not Started`
+`Done`
