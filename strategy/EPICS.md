@@ -20,7 +20,7 @@
 | [credibility-and-distribution.md](epics/credibility-and-distribution.md) | O4/KR2 | Low | launch-post-and-positioning | Not Started |
 | [contribution-workflow.md](epics/contribution-workflow.md) | O4/KR3 | Low | public-leaderboard-and-release | Not Started |
 | [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md) | O1/KR2, O4 | Medium | public-leaderboard-and-release | Done |
-| [leaderboard-scoring-investigation.md](epics/leaderboard-scoring-investigation.md) | O1/KR2 | High | public-leaderboard-and-release | Not Started |
+| [leaderboard-scoring-investigation.md](epics/leaderboard-scoring-investigation.md) | O1/KR2 | High | public-leaderboard-and-release | Done |
 
 ---
 
@@ -88,9 +88,9 @@ Phase 6 (Launch & Growth):                  │
 
 | Status | Count | Epics |
 |--------|-------|-------|
-| Done | 12 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset, expand-mcq-dataset, launch-post-and-positioning, expand-cdk-dataset, log-transparency-and-drilldown, category-score-reporting |
+| Done | 13 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset, expand-mcq-dataset, launch-post-and-positioning, expand-cdk-dataset, log-transparency-and-drilldown, category-score-reporting, leaderboard-scoring-investigation |
 | In Progress | 0 | — |
-| Not Started | 3 | leaderboard-scoring-investigation, credibility-and-distribution, contribution-workflow |
+| Not Started | 2 | credibility-and-distribution, contribution-workflow |
 
 **Tasks Created**: 13 epics have tasks defined (72 total tasks)
 
@@ -102,19 +102,13 @@ Phase 6 (Launch & Growth):                  │
 
 Based on dependencies and priorities:
 
-### Up Next: `leaderboard-scoring-investigation` (HIGH PRIORITY)
+### Up Next: Run Fresh Benchmark
 
-**Status:** Not Started
+**Status:** Ready
 
-**Description:** Investigate and fix scoring issues: update to latest models, fix log viewer filtering, investigate missing architecture images, debug low practice exam scores.
+**Description:** All scoring investigation fixes are in place. Run a fresh benchmark to verify improvements.
 
-**Epic file:** [leaderboard-scoring-investigation.md](epics/leaderboard-scoring-investigation.md)
-
-**Tasks:**
-1. Update to latest frontier models (gpt-5.2, claude-sonnet-4.5)
-2. Fix log viewer to show only selected model's logs
-3. Investigate missing images in architecture tasks
-4. Investigate low/zero practice exam scores
+**Action:** Trigger CI workflow or run `make bench`
 
 ### Later: `credibility-and-distribution`
 

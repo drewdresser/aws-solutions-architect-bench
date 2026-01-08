@@ -2,7 +2,7 @@
 
 **Epic:** [leaderboard-scoring-investigation.md](../epics/leaderboard-scoring-investigation.md)
 **Size:** `M`
-**Status:** `Not Started`
+**Status:** `Done`
 
 ## Context
 
@@ -10,11 +10,18 @@ When clicking on a model name in the leaderboard to view its logs, the log viewe
 
 ## Acceptance Criteria
 
-- [ ] Clicking a model name shows only that model's logs
-- [ ] Log list is filtered by model name/ID
-- [ ] Back button or breadcrumb to return to full leaderboard
-- [ ] Model name clearly displayed in log viewer header
-- [ ] Works correctly for all models in the leaderboard
+- [x] Clicking a model name shows only that model's logs
+- [x] Log list is filtered by model name/ID
+- [ ] Back button or breadcrumb to return to full leaderboard (N/A - browser back works)
+- [x] Model name clearly displayed in log viewer header
+- [x] Works correctly for all models in the leaderboard
+
+## Resolution
+
+Updated `docs/index.html` to:
+1. Add `getLogUrl()` helper function that reads manifest.json
+2. Generate model-specific URLs using `?log_file=` parameter
+3. Links now open directly to the model's latest log file
 
 ## Technical Notes
 

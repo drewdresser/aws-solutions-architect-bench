@@ -314,6 +314,25 @@
       return normalized in logManifest.models;
     };
 
+    // Get the log viewer URL for a model (links to first/latest log file)
+    const getLogUrl = (modelName) => {
+      if (!logManifest || !logManifest.models) return 'logs/index.html';
+      const normalized = normalizeModelName(modelName);
+      const modelData = logManifest.models[normalized];
+      if (!modelData || !modelData.logs || modelData.logs.length === 0) {
+        return 'logs/index.html';
+      }
+      // Sort by completed_at descending to get latest, then use first log file
+      const sortedLogs = [...modelData.logs].sort((a, b) => {
+        const dateA = a.completed_at ? new Date(a.completed_at) : new Date(0);
+        const dateB = b.completed_at ? new Date(b.completed_at) : new Date(0);
+        return dateB - dateA;
+      });
+      // Use the first (latest) log file with log_file parameter
+      const logFile = sortedLogs[0].file;
+      return `logs/index.html?log_file=${encodeURIComponent(logFile)}`;
+    };
+
     // Handle both new format (with metadata) and old format (flat array)
     let rows, metadata;
     if (data._metadata && data.models) {
@@ -402,7 +421,8 @@
       // Create model cell with link if logs available
       let modelCell;
       if (hasLogs(r.model)) {
-        modelCell = `<td class="model-name"><a href="logs/index.html" class="model-link" title="View evaluation logs">${r.model}</a></td>`;
+        const logUrl = getLogUrl(r.model);
+        modelCell = `<td class="model-name"><a href="${logUrl}" class="model-link" title="View evaluation logs for ${r.model}">${r.model}</a></td>`;
       } else {
         modelCell = `<td class="model-name model-name-no-link">${r.model}</td>`;
       }

@@ -126,15 +126,34 @@ Format your response clearly with these sections. Be specific about AWS services
 
 
 def load_architecture_dataset(file_path: str) -> Dataset:
-    """Load architecture dataset with full metadata preserved."""
+    """Load architecture dataset with full metadata preserved.
+
+    Skips items that reference images which don't exist to avoid
+    asking models to analyze diagrams they can't see.
+    """
     import json
 
     samples = []
+    skipped_count = 0
     file_path_obj = Path(__file__).parent / file_path
+    base_dir = Path(__file__).parent
 
     with open(file_path_obj, "r") as f:
         for line in f:
             data = json.loads(line.strip())
+
+            # Check if item references an image that doesn't exist
+            diagram_path = data.get("diagram_path")
+            if diagram_path:
+                image_file = (base_dir / diagram_path).resolve()
+                if not image_file.exists():
+                    item_id = data.get("id", "unknown")
+                    logger.warning(
+                        f"Skipping architecture item {item_id}: "
+                        f"referenced image not found: {diagram_path}"
+                    )
+                    skipped_count += 1
+                    continue
 
             # Create sample with input/target fields and preserve metadata
             sample = Sample(
@@ -143,6 +162,12 @@ def load_architecture_dataset(file_path: str) -> Dataset:
                 metadata=data,  # Store the full original data
             )
             samples.append(sample)
+
+    if skipped_count > 0:
+        logger.warning(
+            f"Skipped {skipped_count} architecture items due to missing images. "
+            "Run with DEBUG logging to see details."
+        )
 
     return MemoryDataset(samples)
 

@@ -2,7 +2,7 @@
 
 **Epic:** [leaderboard-scoring-investigation.md](../epics/leaderboard-scoring-investigation.md)
 **Size:** `S`
-**Status:** `Not Started`
+**Status:** `Done`
 
 ## Context
 
@@ -10,12 +10,12 @@ The current model list includes older models (gpt-4.1, gpt-5) that should be rep
 
 ## Acceptance Criteria
 
-- [ ] Remove `openrouter/openai/gpt-4.1` from model list
-- [ ] Remove `openrouter/openai/gpt-5` from model list
-- [ ] Add `openrouter/openai/gpt-5.2` to model list
-- [ ] Add `openrouter/anthropic/claude-sonnet-4.5` to model list
-- [ ] Verify models work with a quick test run
-- [ ] Update any documentation referencing old models
+- [x] Remove `openrouter/openai/gpt-4.1` from model list
+- [x] Remove `openrouter/openai/gpt-5` from model list
+- [x] Add `openrouter/openai/gpt-5.2` to model list
+- [x] Add `openrouter/anthropic/claude-sonnet-4.5` to model list
+- [x] Verify models work with a quick test run
+- [ ] Update any documentation referencing old models (N/A - no docs to update)
 
 ## Technical Notes
 

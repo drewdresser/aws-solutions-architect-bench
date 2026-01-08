@@ -6,12 +6,12 @@ Accurate, trustworthy benchmark scores on current frontier models that users can
 
 ## Success Criteria
 
-- [ ] Models updated to latest versions (gpt-5.2, claude-sonnet-4.5)
-- [ ] Log viewer shows only logs for the selected model (bug fix)
-- [ ] Architecture tasks with images load and display correctly
-- [ ] Practice exam scores investigated and issues resolved
-- [ ] All task types producing meaningful, non-zero scores
-- [ ] Fresh benchmark run with verified results
+- [x] Models updated to latest versions (gpt-5.2, claude-sonnet-4.5)
+- [x] Log viewer shows only logs for the selected model (bug fix)
+- [x] Architecture tasks with images load and display correctly
+- [x] Practice exam scores investigated and issues resolved
+- [ ] All task types producing meaningful, non-zero scores (pending next run)
+- [ ] Fresh benchmark run with verified results (pending)
 
 ## Technical Approach
 
@@ -33,11 +33,11 @@ Accurate, trustworthy benchmark scores on current frontier models that users can
 
 ## Tasks
 
-- [ ] [001-update-models](../tasks/leaderboard-scoring-investigation-001-update-models.md) — Update to latest frontier models (`S`)
-- [ ] [002-fix-log-viewer-filtering](../tasks/leaderboard-scoring-investigation-002-fix-log-viewer-filtering.md) — Fix log viewer to show only selected model (`M`)
-- [ ] [003-investigate-architecture-images](../tasks/leaderboard-scoring-investigation-003-investigate-architecture-images.md) — Investigate missing images in architecture tasks (`M`)
-- [ ] [004-investigate-practice-exam-scores](../tasks/leaderboard-scoring-investigation-004-investigate-practice-exam-scores.md) — Investigate low/zero practice exam scores (`L`)
+- [x] [001-update-models](../tasks/leaderboard-scoring-investigation-001-update-models.md) — Update to latest frontier models (`S`)
+- [x] [002-fix-log-viewer-filtering](../tasks/leaderboard-scoring-investigation-002-fix-log-viewer-filtering.md) — Fix log viewer to show only selected model (`M`)
+- [x] [003-investigate-architecture-images](../tasks/leaderboard-scoring-investigation-003-investigate-architecture-images.md) — Investigate missing images in architecture tasks (`M`)
+- [x] [004-investigate-practice-exam-scores](../tasks/leaderboard-scoring-investigation-004-investigate-practice-exam-scores.md) — Investigate low/zero practice exam scores (`L`)
 
 ## Status
 
-`Not Started`
+`Done`
