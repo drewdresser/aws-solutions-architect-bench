@@ -2,7 +2,7 @@
 
 **Epic**: [log-transparency-and-drilldown](../epics/log-transparency-and-drilldown.md)
 **Task ID**: 001-explore-inspect-bundle
-**Status**: `Not Started`
+**Status**: `Done`
 
 ## Objective
 
@@ -45,3 +45,47 @@ ls -la test-bundle/
 ## Notes
 
 If `inspect view bundle` doesn't meet all requirements, document gaps and consider alternative approaches (custom viewer, JSON extraction).
+
+## Findings (2026-01-07)
+
+### Bundle Output Structure
+
+```
+test-bundle/
+├── index.html          # Entry point (single-page React app)
+├── robots.txt          # SEO file
+├── assets/
+│   ├── index.js        # ~9.7MB bundled React viewer
+│   ├── index.css       # ~956KB styles
+│   └── favicon.svg     # Icon
+└── logs/
+    ├── listing.json    # Metadata about all logs
+    └── *.eval          # Individual log files (ZIP format)
+```
+
+### Key Findings
+
+1. **Size**: ~10MB fixed overhead for assets, plus individual log files (~9KB per eval)
+2. **Static Hosting**: Works as static files - no server required
+3. **listing.json**: Contains metadata for each log including:
+   - `model`: Model name (e.g., "openrouter/anthropic/claude-sonnet-4")
+   - `task`: Task name
+   - `status`: success/error
+   - `primary_metric`: Score information
+   - `started_at`/`completed_at`: Timestamps
+4. **Log Format**: `.eval` files are ZIP archives containing JSON data
+5. **Viewer**: React-based single-page app that loads logs dynamically
+
+### Linking Strategy
+
+The `listing.json` provides all metadata needed to:
+1. Map model names from leaderboard to log files
+2. Show log availability before linking
+3. Link directly to the viewer (URL fragment or query param for specific log)
+
+### Recommendations
+
+1. **Single Bundle**: Use one bundled viewer at `docs/logs/` with all logs
+2. **Model Mapping**: Parse `listing.json` to create model → log URL mapping
+3. **Size Management**: 10MB is acceptable for GitHub Pages (1GB limit)
+4. **CI Integration**: Bundle after each benchmark run before deployment

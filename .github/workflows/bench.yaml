@@ -78,6 +78,12 @@ jobs:
             results/**
           if-no-files-found: warn
 
+      # --- Bundle evaluation logs for viewing ---
+      - name: Bundle evaluation logs
+        run: |
+          # Bundle logs for static viewing (gracefully handles missing logs)
+          ./scripts/bundle_logs.sh || echo "Log bundling skipped (no logs or error)"
+
       # --- Build static site for GitHub Pages ---
       - name: Build site bundle
         run: |
@@ -85,6 +91,14 @@ jobs:
           cp docs/index.html site/
           cp results/leaderboard.csv site/ || true
           cp results/leaderboard.json site/ || true
+
+          # Copy bundled logs if they exist
+          if [ -d docs/logs ]; then
+            cp -r docs/logs site/
+            echo "Bundled logs copied to site/logs/"
+          else
+            echo "No bundled logs to copy"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

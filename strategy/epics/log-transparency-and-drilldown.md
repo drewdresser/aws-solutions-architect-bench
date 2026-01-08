@@ -6,11 +6,11 @@ Users viewing the leaderboard can click on a model to see detailed evaluation lo
 
 ## Success Criteria
 
-- [ ] Detailed logs viewable by clicking on model names in the leaderboard
-- [ ] Logs hosted as static files on GitHub Pages (no server required)
-- [ ] Per-model log pages show all eval samples with questions, responses, and scores
-- [ ] Log viewer works across all three categories (Practice Exam, Architecture, CDK)
-- [ ] CI pipeline automatically bundles and deploys logs alongside leaderboard
+- [x] Detailed logs viewable by clicking on model names in the leaderboard
+- [x] Logs hosted as static files on GitHub Pages (no server required)
+- [x] Per-model log pages show all eval samples with questions, responses, and scores
+- [x] Log viewer works across all three categories (Practice Exam, Architecture, CDK)
+- [x] CI pipeline automatically bundles and deploys logs alongside leaderboard
 
 ## Technical Approach
 
@@ -51,11 +51,11 @@ If `inspect view bundle` doesn't meet all needs, we could:
 
 ## Tasks
 
-- [ ] [001-explore-inspect-bundle](../tasks/log-transparency-and-drilldown-001-explore-inspect-bundle.md) — Test `inspect view bundle` and understand output structure
-- [ ] [002-bundle-logs-script](../tasks/log-transparency-and-drilldown-002-bundle-logs-script.md) — Create script to organize bundled logs by model
-- [ ] [003-add-leaderboard-links](../tasks/log-transparency-and-drilldown-003-add-leaderboard-links.md) — Make model names clickable in leaderboard UI
-- [ ] [004-ci-log-deployment](../tasks/log-transparency-and-drilldown-004-ci-log-deployment.md) — Update CI to bundle and deploy logs with leaderboard
+- [x] [001-explore-inspect-bundle](../tasks/log-transparency-and-drilldown-001-explore-inspect-bundle.md) — Test `inspect view bundle` and understand output structure
+- [x] [002-bundle-logs-script](../tasks/log-transparency-and-drilldown-002-bundle-logs-script.md) — Create script to organize bundled logs by model
+- [x] [003-add-leaderboard-links](../tasks/log-transparency-and-drilldown-003-add-leaderboard-links.md) — Make model names clickable in leaderboard UI
+- [x] [004-ci-log-deployment](../tasks/log-transparency-and-drilldown-004-ci-log-deployment.md) — Update CI to bundle and deploy logs with leaderboard
 
 ## Status
 
-`Not Started`
+`Done`

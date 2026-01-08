@@ -2,7 +2,7 @@
 
 **Epic**: [log-transparency-and-drilldown](../epics/log-transparency-and-drilldown.md)
 **Task ID**: 003-add-leaderboard-links
-**Status**: `Not Started`
+**Status**: `Done`
 
 ## Objective
 

@@ -2,7 +2,7 @@
 
 **Epic**: [log-transparency-and-drilldown](../epics/log-transparency-and-drilldown.md)
 **Task ID**: 002-bundle-logs-script
-**Status**: `Not Started`
+**Status**: `Done`
 
 ## Objective
 
