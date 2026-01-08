@@ -1,6 +1,6 @@
 # Epics Overview
 
-*Last updated: 2026-01-07 (expand-mcq-dataset tasks created)*
+*Last updated: 2026-01-07 (expand-mcq-dataset completed)*
 
 ## Epic Summary
 
@@ -12,14 +12,14 @@
 | [public-leaderboard-and-release.md](epics/public-leaderboard-and-release.md) | O1/KR2 | High | scoring-and-aggregation-hardening, reproducibility-and-ci | Done |
 | [llm-judge-architecture-scoring.md](epics/llm-judge-architecture-scoring.md) | O2/KR1, O2/KR2 | High | None | Done |
 | [structured-diagram-formats-and-validation.md](epics/structured-diagram-formats-and-validation.md) | O2/KR3 | Medium | llm-judge-architecture-scoring | Done |
-| [expand-mcq-dataset.md](epics/expand-mcq-dataset.md) | O3/KR1 | Medium | None | In Progress |
+| [expand-mcq-dataset.md](epics/expand-mcq-dataset.md) | O3/KR1 | Medium | None | Done |
 | [expand-architecture-dataset.md](epics/expand-architecture-dataset.md) | O3/KR2 | Medium | structured-diagram-formats-and-validation | Done |
 | [expand-cdk-dataset.md](epics/expand-cdk-dataset.md) | O3/KR3 | Low | cdk-eval-reliability | Not Started |
 | [category-score-reporting.md](epics/category-score-reporting.md) | O3/KR4 | Medium | expand-mcq, expand-architecture, expand-cdk | Not Started |
-| [launch-post-and-positioning.md](epics/launch-post-and-positioning.md) | O4/KR1 | Medium | public-leaderboard-and-release | Not Started |
+| [launch-post-and-positioning.md](epics/launch-post-and-positioning.md) | O4/KR1 | Medium | public-leaderboard-and-release | In Progress |
 | [credibility-and-distribution.md](epics/credibility-and-distribution.md) | O4/KR2 | Low | launch-post-and-positioning | Not Started |
 | [contribution-workflow.md](epics/contribution-workflow.md) | O4/KR3 | Low | public-leaderboard-and-release | Not Started |
-| [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md) | O1/KR2, O4 | Medium | public-leaderboard-and-release | Not Started |
+| [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md) | O1/KR2, O4 | Medium | public-leaderboard-and-release | In Progress |
 
 ---
 
@@ -39,7 +39,7 @@ Phase 3 (Scoring Improvements) - DONE:      │
   └── structured-diagram-formats ◄──────────┤ (DONE)
                                             │
 Phase 4 (Dataset Expansion):                │
-  ├── expand-mcq-dataset ◄──────────────────┤ (IN PROGRESS)
+  ├── expand-mcq-dataset ◄──────────────────┤ (DONE)
   ├── expand-architecture-dataset ◄─────────┤ (DONE)
   └── expand-cdk-dataset ◄──────────────────┤ (needs cdk-eval-reliability)
                                             │
@@ -68,7 +68,7 @@ Phase 6 (Launch & Growth):                  │
 - **structured-diagram-formats-and-validation**: DONE. All 5 tasks complete. Implemented Mermaid/PlantUML/JSON validators, created JSON schema for architectures, integrated validation into scorer with score modifiers, updated dataset items with format requirements, created comprehensive documentation.
 
 **Phase 4 — Dataset Expansion** (can parallelize some)
-- **expand-mcq-dataset**: IN PROGRESS. 5 tasks created. Grow practice exam from ~20 to 50+ questions with domain tagging, aws_services tags, and balanced Associate/Pro split.
+- **expand-mcq-dataset**: DONE. All 5 tasks complete. Grew from 20 to 50 questions, 25 unique domains, 76 unique AWS services, balanced 25/25 Associate/Pro split, 30 single-select/20 multi-select.
 - **expand-architecture-dataset**: DONE. All 5 tasks complete. Grew from 9 to 28 items with new architecture_critique subtype, 59 unique AWS services covered, all items tagged with aws_services and domains.
 - **expand-cdk-dataset**: Grow from ~20 to 40+ prompts. Must wait for cdk-eval-reliability.
 
@@ -87,11 +87,11 @@ Phase 6 (Launch & Growth):                  │
 
 | Status | Count | Epics |
 |--------|-------|-------|
-| Done | 7 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset |
-| In Progress | 1 | expand-mcq-dataset |
-| Not Started | 6 | (all others) |
+| Done | 8 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset, expand-mcq-dataset |
+| In Progress | 2 | launch-post-and-positioning, log-transparency-and-drilldown |
+| Not Started | 4 | expand-cdk-dataset, category-score-reporting, credibility-and-distribution, contribution-workflow |
 
-**Tasks Created**: 8 epics have tasks defined (42 total tasks)
+**Tasks Created**: 10 epics have tasks defined (55 total tasks)
 
 **v0.1.0 Released!** [View on GitHub](https://github.com/drewdresser/aws-solutions-architect-bench/releases/tag/v0.1.0)
 
@@ -101,20 +101,35 @@ Phase 6 (Launch & Growth):                  │
 
 Based on dependencies and priorities:
 
-### Currently In Progress: `expand-mcq-dataset`
+### Currently In Progress: `launch-post-and-positioning`
 
-**Status:** 5 tasks created, ready to execute
+**Status:** 4 tasks created, ready to execute
 
 **Tasks:**
-1. Create MCQ generation script (mirrors generate_arch_items.py pattern)
-2. Generate 15 SA Associate-level questions
-3. Generate 15 SA Professional-level questions
-4. Add aws_services metadata tags to all questions
-5. Review, validate, and finalize dataset
+1. Write launch blog post (L) — comprehensive write-up explaining SA Bench
+2. Add meta tags (S) — Open Graph and Twitter Card for social sharing
+3. Update README (M) — polish for launch with badges and quick start
+4. Create social posts (S) — Twitter/X and LinkedIn launch content
 
-**Start with:** Task 001 (create generation script) — blocks tasks 002-003
+**Start with:** Task 001 (write blog post) — blocks tasks 002-004
 
-**Epic file:** [expand-mcq-dataset.md](epics/expand-mcq-dataset.md)
+**Epic file:** [launch-post-and-positioning.md](epics/launch-post-and-positioning.md)
+
+---
+
+### Currently In Progress: `log-transparency-and-drilldown`
+
+**Status:** 4 tasks created, ready to execute
+
+**Tasks:**
+1. Explore inspect bundle (S) — understand `inspect view bundle` output
+2. Bundle logs script (M) — create script to organize logs by model
+3. Add leaderboard links (M) — make model names clickable
+4. CI log deployment (M) — update workflow to deploy logs
+
+**Start with:** Task 001 (explore inspect bundle) — blocks tasks 002-004
+
+**Epic file:** [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md)
 
 ---
 
@@ -123,8 +138,6 @@ Based on dependencies and priorities:
 | Option | Priority | Notes |
 |--------|----------|-------|
 | **expand-cdk-dataset** | Low | Now unblocked; grow from 20→40 prompts. |
-| **launch-post-and-positioning** | Medium | Now unblocked (v0.1 released); public write-up about SA Bench. |
-| **log-transparency-and-drilldown** | Medium | Now unblocked; add clickable detailed log viewer to leaderboard. |
 
 ---
 

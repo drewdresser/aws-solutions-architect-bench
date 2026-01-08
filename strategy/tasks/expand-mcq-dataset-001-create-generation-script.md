@@ -2,7 +2,7 @@
 
 **Epic:** [expand-mcq-dataset.md](../epics/expand-mcq-dataset.md)
 **Size:** `M`
-**Status:** `Todo`
+**Status:** `Done`
 
 ## Context
 
