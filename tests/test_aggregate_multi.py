@@ -258,27 +258,53 @@ class TestSchemaValidation:
 
     def test_valid_leaderboard_passes(self):
         """Valid leaderboard data should pass validation."""
-        valid_data = [
-            {
-                "model": "test/model-a",
-                "practice_exam": 0.8,
-                "architecture_design": 0.7,
-                "cdk_synth": 0.6,
-                "overall": 0.7,
+        valid_data = {
+            "_metadata": {
+                "generated_at": "2026-01-08T00:00:00Z",
+                "model_count": 2,
+                "categories": {
+                    "practice_exam": {
+                        "name": "Practice Exam",
+                        "description": "AWS certification-style MCQ questions",
+                        "weight": 0.35,
+                        "sample_count": 50,
+                        "scoring": "binary",
+                    }
+                },
             },
-            {
-                "model": "test/model-b",
-                "overall": 0.5,
-            },
-        ]
+            "models": [
+                {
+                    "model": "test/model-a",
+                    "practice_exam": 0.8,
+                    "architecture_design": 0.7,
+                    "cdk_synth": 0.6,
+                    "overall": 0.7,
+                },
+                {
+                    "model": "test/model-b",
+                    "overall": 0.5,
+                },
+            ],
+        }
         # Should not raise
         validate_leaderboard_json(valid_data)
+
+    def _wrap_models(self, models):
+        """Helper to wrap model data in the new schema format."""
+        return {
+            "_metadata": {
+                "generated_at": "2026-01-08T00:00:00Z",
+                "model_count": len(models),
+                "categories": {},
+            },
+            "models": models,
+        }
 
     def test_invalid_overall_fails(self):
         """Overall score > 1.0 should fail validation."""
         import jsonschema
 
-        invalid_data = [{"model": "test", "overall": 1.5}]  # > 1.0
+        invalid_data = self._wrap_models([{"model": "test", "overall": 1.5}])  # > 1.0
         with pytest.raises(jsonschema.ValidationError):
             validate_leaderboard_json(invalid_data)
 
@@ -286,7 +312,7 @@ class TestSchemaValidation:
         """Entry without model should fail validation."""
         import jsonschema
 
-        invalid_data = [{"overall": 0.5}]  # Missing required 'model'
+        invalid_data = self._wrap_models([{"overall": 0.5}])  # Missing required 'model'
         with pytest.raises(jsonschema.ValidationError):
             validate_leaderboard_json(invalid_data)
 
@@ -294,7 +320,7 @@ class TestSchemaValidation:
         """Entry without overall should fail validation."""
         import jsonschema
 
-        invalid_data = [{"model": "test"}]  # Missing required 'overall'
+        invalid_data = self._wrap_models([{"model": "test"}])  # Missing required 'overall'
         with pytest.raises(jsonschema.ValidationError):
             validate_leaderboard_json(invalid_data)
 
@@ -302,7 +328,7 @@ class TestSchemaValidation:
         """Negative category score should fail validation."""
         import jsonschema
 
-        invalid_data = [{"model": "test", "overall": 0.5, "practice_exam": -0.1}]
+        invalid_data = self._wrap_models([{"model": "test", "overall": 0.5, "practice_exam": -0.1}])
         with pytest.raises(jsonschema.ValidationError):
             validate_leaderboard_json(invalid_data)
 
