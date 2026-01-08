@@ -29,9 +29,12 @@ Add new questions to `evals/practice_exam/aws_sa.jsonl`. Implement tagging schem
 
 ## Tasks
 
-<!-- Tasks will be created just-in-time when work begins -->
-- [ ] _Tasks to be defined when epic starts_
+- [ ] [001-create-generation-script](../tasks/expand-mcq-dataset-001-create-generation-script.md) — Create PEP723 script using OpenAI API to generate MCQ items
+- [ ] [002-expand-associate-questions](../tasks/expand-mcq-dataset-002-expand-associate-questions.md) — Generate 15 new SA Associate-level questions
+- [ ] [003-expand-pro-questions](../tasks/expand-mcq-dataset-003-expand-pro-questions.md) — Generate 15 new SA Professional-level questions
+- [ ] [004-add-aws-services-tags](../tasks/expand-mcq-dataset-004-add-aws-services-tags.md) — Add aws_services metadata tags to all questions
+- [ ] [005-review-and-validate](../tasks/expand-mcq-dataset-005-review-and-validate.md) — Review, validate, and finalize the dataset
 
 ## Status
 
-`Not Started`
+`In Progress`
