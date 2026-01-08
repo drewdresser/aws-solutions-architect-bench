@@ -15,7 +15,7 @@ INSPECT ?= uv run inspect
 PY      ?= uv run python
 
 # Comma-separated model list for eval-set/evals
-MODELS  ?= openrouter/anthropic/claude-sonnet-4,openrouter/anthropic/claude-sonnet-4.5,openrouter/openai/gpt-5.2
+MODELS  ?= openrouter/anthropic/claude-sonnet-4,openrouter/anthropic/claude-sonnet-4.5,openrouter/openai/gpt-5.2-chat
 
 # Practice (MCQ) task
 PRACTICE_TASK ?= evals/practice_exam/tasks.py
