@@ -1,32 +1,68 @@
-[
-  {
-    "model":"openrouter\/anthropic\/claude-opus-4",
-    "cdk_synth":0.0,
-    "practice_exam":0.85,
-    "overall":0.34
+{
+  "_metadata": {
+    "generated_at": "2026-01-07T00:00:00Z",
+    "run_id": "local-20260107-000000",
+    "model_count": 5,
+    "categories": {
+      "practice_exam": {
+        "name": "Practice Exam",
+        "description": "AWS certification-style MCQ questions testing service selection, best practices, and architectural decision-making",
+        "weight": 0.34,
+        "sample_count": 50,
+        "scoring": "binary",
+        "confidence": "high",
+        "margin": "±5%"
+      },
+      "architecture_design": {
+        "name": "Architecture Design",
+        "description": "Diagram interpretation and architectural reasoning tasks covering data flow analysis, security assessment, and scalability",
+        "weight": 0.33,
+        "sample_count": 28,
+        "scoring": "rubric",
+        "confidence": "medium",
+        "margin": "±10%"
+      },
+      "cdk_synth": {
+        "name": "CDK Synthesis",
+        "description": "Infrastructure-as-code generation using AWS CDK Python that must successfully synthesize to CloudFormation",
+        "weight": 0.33,
+        "sample_count": 40,
+        "scoring": "binary",
+        "confidence": "high",
+        "margin": "±5%"
+      }
+    }
   },
-  {
-    "model":"openrouter\/anthropic\/claude-sonnet-4",
-    "cdk_synth":0.05,
-    "practice_exam":0.95,
-    "overall":0.41
-  },
-  {
-    "model":"openrouter\/openai\/gpt-4.1",
-    "cdk_synth":0.075,
-    "practice_exam":0.6,
-    "overall":0.285
-  },
-  {
-    "model":"openrouter\/openai\/o3",
-    "cdk_synth":0.0,
-    "practice_exam":0.8,
-    "overall":0.32
-  },
-  {
-    "model":"openrouter\/x-ai\/grok-3-mini",
-    "cdk_synth":0.0,
-    "practice_exam":0.65,
-    "overall":0.26
-  }
-]
+  "models": [
+    {
+      "model": "openrouter/anthropic/claude-opus-4",
+      "cdk_synth": 0.0,
+      "practice_exam": 0.85,
+      "overall": 0.34
+    },
+    {
+      "model": "openrouter/anthropic/claude-sonnet-4",
+      "cdk_synth": 0.05,
+      "practice_exam": 0.95,
+      "overall": 0.41
+    },
+    {
+      "model": "openrouter/openai/gpt-4.1",
+      "cdk_synth": 0.075,
+      "practice_exam": 0.6,
+      "overall": 0.285
+    },
+    {
+      "model": "openrouter/openai/o3",
+      "cdk_synth": 0.0,
+      "practice_exam": 0.8,
+      "overall": 0.32
+    },
+    {
+      "model": "openrouter/x-ai/grok-3-mini",
+      "cdk_synth": 0.0,
+      "practice_exam": 0.65,
+      "overall": 0.26
+    }
+  ]
+}

@@ -26,11 +26,75 @@ import pandas as pd  # type: ignore
 from inspect_ai.log import list_eval_logs, read_eval_log_sample_summaries, read_eval_log
 from task_registry import TASKS
 
+# Category metadata definitions
+CATEGORY_METADATA = {
+    "practice_exam": {
+        "name": "Practice Exam",
+        "description": "AWS certification-style MCQ questions testing service selection, best practices, and architectural decision-making",
+        "dataset_path": "evals/practice_exam/aws_sa.jsonl",
+        "scoring": "binary",
+        "confidence": "high",
+        "margin": "±5%",
+    },
+    "architecture_design": {
+        "name": "Architecture Design",
+        "description": "Diagram interpretation and architectural reasoning tasks covering data flow analysis, security assessment, and scalability",
+        "dataset_path": "evals/architecture_design/architecture_interpretation.jsonl",
+        "scoring": "rubric",
+        "confidence": "medium",
+        "margin": "±10%",
+    },
+    "cdk_synth": {
+        "name": "CDK Synthesis",
+        "description": "Infrastructure-as-code generation using AWS CDK Python that must successfully synthesize to CloudFormation",
+        "dataset_path": "evals/cdk_synth/cdk_synth.jsonl",
+        "scoring": "binary",
+        "confidence": "high",
+        "margin": "±5%",
+    },
+}
+
 # Path to JSON schema for leaderboard validation
 SCHEMA_PATH = pathlib.Path(__file__).parent.parent / "schemas" / "leaderboard.schema.json"
 
+# Base path for dataset files
+BASE_PATH = pathlib.Path(__file__).parent.parent
 
-def validate_leaderboard_json(data: List[Dict[str, Any]]) -> None:
+
+def count_dataset_items(dataset_path: str) -> int:
+    """Count the number of items in a JSONL dataset file."""
+    full_path = BASE_PATH / dataset_path
+    if not full_path.exists():
+        return 0
+    with open(full_path) as f:
+        return sum(1 for line in f if line.strip())
+
+
+def build_category_metadata() -> Dict[str, Dict[str, Any]]:
+    """Build enhanced category metadata including sample counts and weights from registry."""
+    categories = {}
+    for task_key, task_cfg in TASKS.items():
+        if task_key not in CATEGORY_METADATA:
+            continue
+
+        meta = CATEGORY_METADATA[task_key].copy()
+        dataset_path = meta.pop("dataset_path", None)
+
+        # Add weight from task registry
+        meta["weight"] = task_cfg["weight"]
+
+        # Count items from dataset file
+        if dataset_path:
+            meta["sample_count"] = count_dataset_items(dataset_path)
+        else:
+            meta["sample_count"] = 0
+
+        categories[task_key] = meta
+
+    return categories
+
+
+def validate_leaderboard_json(data: Dict[str, Any]) -> None:
     """Validate leaderboard data against JSON schema.
 
     Args:
@@ -240,16 +304,18 @@ def main():
     print(leaderboard.to_string(index=False))
 
     if args.json_out:
-        # Convert to records and validate against schema
+        # Convert to records
         records = leaderboard.to_dict(orient="records")
-        validate_leaderboard_json(records)
 
-        # Add metadata
+        # Build enhanced category metadata
+        category_metadata = build_category_metadata()
+
+        # Add metadata with enhanced categories
         metadata = {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "run_id": os.environ.get("GITHUB_RUN_ID", f"local-{datetime.now().strftime('%Y%m%d-%H%M%S')}"),
             "model_count": len(records),
-            "categories": list(TASKS.keys()),
+            "categories": category_metadata,
         }
 
         # Output format: { "_metadata": {...}, "models": [...] }
@@ -258,11 +324,15 @@ def main():
             "models": records,
         }
 
+        # Validate against schema
+        validate_leaderboard_json(output)
+
         # Write JSON with metadata
         with open(args.json_out, "w") as f:
             json.dump(output, f, indent=2)
         print(f"JSON leaderboard → {args.json_out}")
         print(f"  Generated at: {metadata['generated_at']}")
+        print(f"  Categories: {', '.join(category_metadata.keys())}")
 
 
 if __name__ == "__main__":

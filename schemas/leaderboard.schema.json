@@ -3,40 +3,110 @@
   "$id": "https://github.com/drewdresser/aws-sa-bench/schemas/leaderboard.schema.json",
   "title": "SA Bench Leaderboard",
   "description": "Schema for the SA Bench leaderboard JSON output",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "required": ["model", "overall"],
-    "properties": {
-      "model": {
-        "type": "string",
-        "description": "Model identifier (e.g., openrouter/anthropic/claude-sonnet-4)"
-      },
-      "practice_exam": {
-        "type": "number",
-        "minimum": 0,
-        "maximum": 1,
-        "description": "Practice exam (MCQ) score in [0, 1]"
-      },
-      "architecture_design": {
-        "type": "number",
-        "minimum": 0,
-        "maximum": 1,
-        "description": "Architecture design score in [0, 1]"
-      },
-      "cdk_synth": {
-        "type": "number",
-        "minimum": 0,
-        "maximum": 1,
-        "description": "CDK synthesis score in [0, 1]"
-      },
-      "overall": {
-        "type": "number",
-        "minimum": 0,
-        "maximum": 1,
-        "description": "Weighted overall score in [0, 1]"
+  "type": "object",
+  "required": ["_metadata", "models"],
+  "properties": {
+    "_metadata": {
+      "type": "object",
+      "required": ["generated_at", "model_count", "categories"],
+      "properties": {
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of when the leaderboard was generated"
+        },
+        "run_id": {
+          "type": "string",
+          "description": "GitHub run ID or local run identifier"
+        },
+        "model_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of models in the leaderboard"
+        },
+        "categories": {
+          "type": "object",
+          "description": "Category metadata including descriptions, weights, and confidence",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["name", "description", "weight", "sample_count", "scoring"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Human-readable category name"
+              },
+              "description": {
+                "type": "string",
+                "description": "What this category measures"
+              },
+              "weight": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Weight in overall score calculation"
+              },
+              "sample_count": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Number of items in the dataset"
+              },
+              "scoring": {
+                "type": "string",
+                "enum": ["binary", "rubric"],
+                "description": "Scoring method (binary pass/fail or rubric-based)"
+              },
+              "confidence": {
+                "type": "string",
+                "enum": ["high", "medium", "low"],
+                "description": "Confidence level based on sample size and scoring method"
+              },
+              "margin": {
+                "type": "string",
+                "pattern": "^±\\d+%$",
+                "description": "Expected variance margin (e.g., ±5%)"
+              }
+            }
+          }
+        }
       }
     },
-    "additionalProperties": true
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["model", "overall"],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model identifier (e.g., openrouter/anthropic/claude-sonnet-4)"
+          },
+          "practice_exam": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Practice exam (MCQ) score in [0, 1]"
+          },
+          "architecture_design": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Architecture design score in [0, 1]"
+          },
+          "cdk_synth": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "CDK synthesis score in [0, 1]"
+          },
+          "overall": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Weighted overall score in [0, 1]"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
   }
 }

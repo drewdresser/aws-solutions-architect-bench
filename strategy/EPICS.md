@@ -1,6 +1,6 @@
 # Epics Overview
 
-*Last updated: 2026-01-07 (expand-cdk-dataset completed)*
+*Last updated: 2026-01-07 (category-score-reporting completed)*
 
 ## Epic Summary
 
@@ -15,11 +15,11 @@
 | [expand-mcq-dataset.md](epics/expand-mcq-dataset.md) | O3/KR1 | Medium | None | Done |
 | [expand-architecture-dataset.md](epics/expand-architecture-dataset.md) | O3/KR2 | Medium | structured-diagram-formats-and-validation | Done |
 | [expand-cdk-dataset.md](epics/expand-cdk-dataset.md) | O3/KR3 | Low | cdk-eval-reliability | Done |
-| [category-score-reporting.md](epics/category-score-reporting.md) | O3/KR4 | Medium | expand-mcq, expand-architecture, expand-cdk | Not Started |
+| [category-score-reporting.md](epics/category-score-reporting.md) | O3/KR4 | Medium | expand-mcq, expand-architecture, expand-cdk | Done |
 | [launch-post-and-positioning.md](epics/launch-post-and-positioning.md) | O4/KR1 | Medium | public-leaderboard-and-release | Done |
 | [credibility-and-distribution.md](epics/credibility-and-distribution.md) | O4/KR2 | Low | launch-post-and-positioning | Not Started |
 | [contribution-workflow.md](epics/contribution-workflow.md) | O4/KR3 | Low | public-leaderboard-and-release | Not Started |
-| [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md) | O1/KR2, O4 | Medium | public-leaderboard-and-release | In Progress |
+| [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md) | O1/KR2, O4 | Medium | public-leaderboard-and-release | Done |
 
 ---
 
@@ -43,8 +43,8 @@ Phase 4 (Dataset Expansion) - DONE:         │
   ├── expand-architecture-dataset ◄─────────┤ (DONE)
   └── expand-cdk-dataset ◄──────────────────┤ (DONE)
                                             │
-Phase 5 (Reporting):                        │
-  └── category-score-reporting ◄────────────┤ (needs all expand-*)
+Phase 5 (Reporting) - DONE:                 │
+  └── category-score-reporting ◄────────────┤ (DONE)
                                             │
 Phase 6 (Launch & Growth):                  │
   ├── launch-post-and-positioning ◄─────────┤ (needs public-leaderboard)
@@ -72,14 +72,14 @@ Phase 6 (Launch & Growth):                  │
 - **expand-architecture-dataset**: DONE. All 5 tasks complete. Grew from 9 to 28 items with new architecture_critique subtype, 59 unique AWS services covered, all items tagged with aws_services and domains.
 - **expand-cdk-dataset**: DONE. All 5 tasks complete. Grew from 20 to 40 prompts with 10 beginner, 17 intermediate, 13 advanced. 53 unique AWS services, 19 domain categories. Created prompt contract documentation.
 
-**Phase 5 — Reporting**
-- **category-score-reporting**: Display per-category scores with definitions and variance estimates. Needs enough items in each category first.
+**Phase 5 — Reporting (DONE)**
+- **category-score-reporting**: DONE. All 4 tasks complete. Enhanced JSON schema with category metadata (name, description, weight, sample_count, confidence, margin). Added UI tooltips and weight badges on category headers. Updated SCORING.md with confidence methodology and JSON schema documentation.
 
 **Phase 6 — Launch & Growth**
 - **launch-post-and-positioning**: DONE. All 4 tasks complete. Created launch blog post (docs/LAUNCH_POST.md), added Open Graph/Twitter Card meta tags, polished README with badges and "What is SA Bench?" section, created social media posts for Twitter/X and LinkedIn.
 - **credibility-and-distribution**: Outreach for mentions/citations from practitioners and researchers.
 - **contribution-workflow**: CONTRIBUTING.md, issue templates, and documentation for external contributors.
-- **log-transparency-and-drilldown**: Click-to-view detailed evaluation logs from leaderboard. Uses Inspect's `inspect view bundle` for static HTML log viewer.
+- **log-transparency-and-drilldown**: DONE. All 4 tasks complete. Created log bundling script (scripts/bundle_logs.sh), added clickable model links to leaderboard, integrated log bundling into CI workflow, logs deployed to GitHub Pages at /logs/.
 
 ---
 
@@ -87,11 +87,11 @@ Phase 6 (Launch & Growth):                  │
 
 | Status | Count | Epics |
 |--------|-------|-------|
-| Done | 10 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset, expand-mcq-dataset, launch-post-and-positioning, expand-cdk-dataset |
-| In Progress | 1 | log-transparency-and-drilldown |
-| Not Started | 3 | category-score-reporting, credibility-and-distribution, contribution-workflow |
+| Done | 12 | scoring-and-aggregation-hardening, reproducibility-and-ci, cdk-eval-reliability, public-leaderboard-and-release, llm-judge-architecture-scoring, structured-diagram-formats-and-validation, expand-architecture-dataset, expand-mcq-dataset, launch-post-and-positioning, expand-cdk-dataset, log-transparency-and-drilldown, category-score-reporting |
+| In Progress | 0 | — |
+| Not Started | 2 | credibility-and-distribution, contribution-workflow |
 
-**Tasks Created**: 11 epics have tasks defined (60 total tasks)
+**Tasks Created**: 12 epics have tasks defined (68 total tasks)
 
 **v0.1.0 Released!** [View on GitHub](https://github.com/drewdresser/aws-solutions-architect-bench/releases/tag/v0.1.0)
 
@@ -101,29 +101,21 @@ Phase 6 (Launch & Growth):                  │
 
 Based on dependencies and priorities:
 
-### Currently In Progress: `log-transparency-and-drilldown`
+### Up Next: `credibility-and-distribution`
 
-**Status:** 4 tasks created, ready to execute
+**Status:** Not Started
 
-**Tasks:**
-1. Explore inspect bundle (S) — understand `inspect view bundle` output
-2. Bundle logs script (M) — create script to organize logs by model
-3. Add leaderboard links (M) — make model names clickable
-4. CI log deployment (M) — update workflow to deploy logs
+**Description:** Outreach for mentions/citations from practitioners and researchers.
 
-**Start with:** Task 001 (explore inspect bundle) — blocks tasks 002-004
+**Epic file:** [credibility-and-distribution.md](epics/credibility-and-distribution.md)
 
-**Epic file:** [log-transparency-and-drilldown.md](epics/log-transparency-and-drilldown.md)
+### Up Next: `contribution-workflow`
 
----
+**Status:** Not Started
 
-### Up Next: `category-score-reporting`
+**Description:** CONTRIBUTING.md, issue templates, and documentation for external contributors.
 
-**Status:** Not Started (all dependencies now complete)
-
-**Pre-requisites:** expand-mcq-dataset, expand-architecture-dataset, expand-cdk-dataset (all DONE)
-
-**Epic file:** [category-score-reporting.md](epics/category-score-reporting.md)
+**Epic file:** [contribution-workflow.md](epics/contribution-workflow.md)
 
 ---
 

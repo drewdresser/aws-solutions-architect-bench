@@ -6,10 +6,17 @@
   <title>AWS SA Bench - Leaderboard</title>
 
   <!-- Open Graph meta tags for social sharing -->
-  <meta property="og:title" content="AWS Solutions Architect LLM Benchmark" />
-  <meta property="og:description" content="Measuring LLM performance on real AWS Solutions Architect tasks across MCQ, Architecture Design, and CDK Synthesis." />
+  <meta property="og:title" content="SA Bench: AI Solutions Architect Benchmark" />
+  <meta property="og:description" content="Measuring LLM performance on AWS Solutions Architect tasks. Compare models across practice exams, architecture design, and CDK synthesis." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://drewdresser.github.io/aws-solutions-architect-bench/" />
+  <meta property="og:image" content="https://drewdresser.github.io/aws-solutions-architect-bench/og-image.png" />
+
+  <!-- Twitter Card meta tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SA Bench: AI Solutions Architect Benchmark" />
+  <meta name="twitter:description" content="Measuring LLM performance on AWS Solutions Architect tasks. Compare models across practice exams, architecture design, and CDK synthesis." />
+  <meta name="twitter:image" content="https://drewdresser.github.io/aws-solutions-architect-bench/og-image.png" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
   <style>
@@ -35,7 +42,93 @@
 
     /* Category columns styling */
     .category-score { font-size: 0.9em; }
-    th.category-header { background: #f5f5f5; font-size: 0.85em; }
+    th.category-header {
+      background: #f5f5f5;
+      font-size: 0.85em;
+      position: relative;
+      cursor: help;
+    }
+
+    /* Weight badge in header */
+    .weight-badge {
+      display: inline-block;
+      background: #3273dc;
+      color: white;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: 0.75em;
+      margin-left: 0.3rem;
+      vertical-align: middle;
+      font-weight: normal;
+    }
+
+    /* Confidence badge */
+    .confidence-badge {
+      display: inline-block;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: 0.7em;
+      margin-left: 0.2rem;
+      vertical-align: middle;
+    }
+    .confidence-high { background: #48c774; color: white; }
+    .confidence-medium { background: #ffdd57; color: #363636; }
+    .confidence-low { background: #f14668; color: white; }
+
+    /* Tooltip styling */
+    .category-tooltip {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: #363636;
+      color: #f5f5f5;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: normal;
+      text-align: left;
+      min-width: 280px;
+      max-width: 350px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      white-space: normal;
+      line-height: 1.4;
+    }
+    .category-tooltip::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #363636;
+    }
+    th.category-header:hover .category-tooltip {
+      display: block;
+    }
+    .tooltip-title {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      color: white;
+    }
+    .tooltip-desc {
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+    .tooltip-stats {
+      font-size: 0.85em;
+      opacity: 0.8;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 0.4rem;
+      margin-top: 0.3rem;
+    }
+    .tooltip-stats span {
+      display: inline-block;
+      margin-right: 1rem;
+    }
 
     /* Mobile responsive table */
     .table-container {
@@ -94,6 +187,32 @@
     }
     .links { margin-top: 1rem; }
     .links a { margin-right: 1rem; }
+
+    /* Model name links */
+    .model-link {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dashed #888;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .model-link:hover {
+      color: #3273dc;
+      border-bottom-color: #3273dc;
+      border-bottom-style: solid;
+    }
+    .model-link::after {
+      content: " →";
+      font-size: 0.75em;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .model-link:hover::after {
+      opacity: 0.6;
+    }
+    .model-name-no-link {
+      color: #888;
+    }
   </style>
 </head>
 <body class="section">
@@ -112,7 +231,8 @@
     <div class="methodology">
       <h2 class="title is-5">Scoring Methodology</h2>
 
-      <div class="methodology-grid">
+      <div class="methodology-grid" id="methodology-cards">
+        <!-- Populated dynamically from category metadata -->
         <div class="methodology-card">
           <h4>Practice Exam <span class="weight">34%</span></h4>
           <p>AWS certification-style multiple-choice questions covering core services, architecture patterns, and best practices. Binary scoring: correct or incorrect.</p>
@@ -132,8 +252,17 @@
         Overall = 0.34 × practice_exam + 0.33 × architecture_design + 0.33 × cdk_synth
       </div>
 
-      <h4 class="title is-6">Reproducibility</h4>
-      <p>Scores may vary <strong>±5%</strong> between runs due to LLM non-determinism, model updates, and API routing. To reproduce results:</p>
+      <h4 class="title is-6">Score Confidence</h4>
+      <p>Scores may vary between runs. Expected variance by category:</p>
+      <ul id="confidence-list" style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li><strong>Practice Exam</strong>: ±5% (binary scoring, 50 items)</li>
+        <li><strong>Architecture Design</strong>: ±10% (rubric-based scoring with LLM judge)</li>
+        <li><strong>CDK Synthesis</strong>: ±5% (binary pass/fail, 40 items)</li>
+      </ul>
+      <p style="margin-top: 0.5rem; font-size: 0.9em; color: #666;">When models score within 5% of each other, consider them statistically equivalent.</p>
+
+      <h4 class="title is-6" style="margin-top: 1.5rem;">Reproducibility</h4>
+      <p>To reproduce results:</p>
       <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
         <li>Clone the repository</li>
         <li>Run <code>uv sync && make bench && make board.json</code></li>
@@ -151,9 +280,39 @@
 <script>
 (async () => {
   try {
-    const resp = await fetch('leaderboard.json', { cache: 'no-store' });
-    if (!resp.ok) throw new Error('Failed to load leaderboard');
-    const data = await resp.json();
+    // Load leaderboard and log manifest in parallel
+    const [leaderboardResp, manifestResp] = await Promise.all([
+      fetch('leaderboard.json', { cache: 'no-store' }),
+      fetch('logs/manifest.json', { cache: 'no-store' }).catch(() => null)
+    ]);
+
+    if (!leaderboardResp.ok) throw new Error('Failed to load leaderboard');
+    const data = await leaderboardResp.json();
+
+    // Load log manifest (may not exist)
+    let logManifest = null;
+    if (manifestResp && manifestResp.ok) {
+      try {
+        logManifest = await manifestResp.json();
+      } catch (e) {
+        console.log('Could not parse log manifest');
+      }
+    }
+
+    // Helper to normalize model names (strip openrouter/ prefix)
+    const normalizeModelName = (name) => {
+      if (name.startsWith('openrouter/')) {
+        return name.replace('openrouter/', '');
+      }
+      return name;
+    };
+
+    // Check if model has logs available
+    const hasLogs = (modelName) => {
+      if (!logManifest || !logManifest.models) return false;
+      const normalized = normalizeModelName(modelName);
+      return normalized in logManifest.models;
+    };
 
     // Handle both new format (with metadata) and old format (flat array)
     let rows, metadata;
@@ -180,7 +339,7 @@
     // Put overall first, then categories in order
     const scoreCols = ['overall', ...categoryOrder.filter(c => allCols.includes(c))];
 
-    // Column display names
+    // Column display names (fallback if no metadata)
     const colNames = {
       'overall': 'Overall',
       'practice_exam': 'Practice Exam',
@@ -188,14 +347,49 @@
       'cdk_synth': 'CDK Synth'
     };
 
-    // Build header
+    // Get category metadata (from new format or use defaults)
+    const categoryMeta = metadata && metadata.categories ? metadata.categories : {};
+
+    // Helper to build tooltip HTML for a category
+    const buildTooltip = (col) => {
+      const meta = categoryMeta[col];
+      if (!meta) return '';
+
+      const confidenceClass = meta.confidence ? `confidence-${meta.confidence}` : '';
+      const scoringLabel = meta.scoring === 'binary' ? 'Pass/Fail' : 'Rubric-based';
+
+      return `
+        <div class="category-tooltip">
+          <div class="tooltip-title">${meta.name}</div>
+          <div class="tooltip-desc">${meta.description}</div>
+          <div class="tooltip-stats">
+            <span>${meta.sample_count} items</span>
+            <span>${scoringLabel}</span>
+            <span>${meta.margin || '±5%'} variance</span>
+          </div>
+        </div>
+      `;
+    };
+
+    // Build header with tooltips and weight badges
     const headerHtml = '<tr>' +
       '<th>Model</th>' +
       scoreCols.map(col => {
         const isOverall = col === 'overall';
         const cls = isOverall ? 'overall-header' : 'category-header';
-        const name = colNames[col] || col.replace(/_/g, ' ');
-        return `<th class="${cls}">${name}</th>`;
+        const meta = categoryMeta[col];
+        const name = meta ? meta.name : (colNames[col] || col.replace(/_/g, ' '));
+
+        if (isOverall) {
+          return `<th class="${cls}">${name}</th>`;
+        }
+
+        // Category column with weight badge and tooltip
+        const weight = meta ? Math.round(meta.weight * 100) + '%' : '';
+        const weightBadge = weight ? `<span class="weight-badge">${weight}</span>` : '';
+        const tooltip = buildTooltip(col);
+
+        return `<th class="${cls}">${name}${weightBadge}${tooltip}</th>`;
       }).join('') +
       '</tr>';
     document.getElementById('board-head').innerHTML = headerHtml;
@@ -205,7 +399,14 @@
 
     // Build body
     const bodyHtml = rows.map(r => {
-      const modelCell = `<td class="model-name">${r.model}</td>`;
+      // Create model cell with link if logs available
+      let modelCell;
+      if (hasLogs(r.model)) {
+        modelCell = `<td class="model-name"><a href="logs/index.html" class="model-link" title="View evaluation logs">${r.model}</a></td>`;
+      } else {
+        modelCell = `<td class="model-name model-name-no-link">${r.model}</td>`;
+      }
+
       const scoreCells = scoreCols.map(col => {
         const val = r[col] || 0;
         const pct = (val * 100).toFixed(1);
