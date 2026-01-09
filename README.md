@@ -1,7 +1,7 @@
 # SA Bench
 
 [![Leaderboard](https://img.shields.io/badge/Leaderboard-Live-brightgreen)](https://drewdresser.github.io/aws-solutions-architect-bench/)
-[![Nightly Benchmark](https://github.com/drewdresser/aws-solutions-architect-bench/actions/workflows/bench.yml/badge.svg)](../../actions/workflows/bench.yml)
+[![Nightly Benchmark](https://github.com/drewdresser/aws-solutions-architect-bench/actions/workflows/bench.yaml/badge.svg)](https://github.com/drewdresser/aws-solutions-architect-bench/actions/workflows/bench.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > Measuring LLM performance on AWS Solutions Architect tasks
