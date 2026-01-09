@@ -92,7 +92,7 @@ for log_file, meta in listing.items():
         }
 
     log_entry = {
-        "file": f"logs/{log_file}",
+        "file": log_file,  # Path is relative to logs/ dir where viewer lives
         "task": meta.get("task", "unknown"),
         "status": meta.get("status", "unknown"),
         "score": meta.get("primary_metric", {}).get("value"),
