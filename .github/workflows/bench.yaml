@@ -1,8 +1,8 @@
-name: Nightly Benchmark
+name: Weekly Benchmark
 
 on:
   schedule:
-    - cron: "0 5 * * *"    # daily 05:00 UTC
+    - cron: "0 5 * * 1"    # weekly Monday 05:00 UTC
   workflow_dispatch: {}
 
 permissions:
@@ -50,7 +50,7 @@ jobs:
       - name: Run tests
         run: make test
 
-      - name: Nightly bench run
+      - name: Weekly bench run
         run: |
           # Use local CDK task (no Docker sandbox) for CI reliability
           make bench.daily CDK_TASK="evals/cdk_synth/tasks.py:aws_cdk_synth_local"
@@ -73,7 +73,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nightly-results-${{ github.run_id }}
+          name: weekly-results-${{ github.run_id }}
           path: |
             logs/**
             results/**
